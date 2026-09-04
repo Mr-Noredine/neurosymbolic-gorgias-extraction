@@ -1,0 +1,5 @@
+T1	Option 5 50	Un membre ne peut être démis de ses fonctions
+T2	Context 57 84	il a commis une faute grave
+T3	Context 90 165	il ne remplit plus les conditions nécessaires à l'exercice de ses fonctions
+E1	rule:T1 Condition:T2 Effect:T1
+E2	rule:T1 Condition:T3 Effect:T1

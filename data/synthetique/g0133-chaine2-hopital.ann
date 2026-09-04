@@ -1,0 +1,6 @@
+T1	Option 0 27	le plan blanc est déclenché
+T2	Context 33 79	deux infirmières manquent à l'effectif de nuit
+T3	Option 87 129	les admissions non urgentes sont reportées
+E1	rule:T1 Condition:T2 Effect:T1
+E2	rule:T3 Condition:T1 Effect:T3
+A1	Modality T1 obligatory

@@ -1,0 +1,11 @@
+T1	Option 0 42	Un fonds n'est retenu dans le portefeuille
+T2	Context 50 73	son rendement est élevé
+T3	Context 81 103	le marché est baissier
+T4	Option 105 126	le fonds n'est retenu
+T5	Context 133 161	il présente un risque faible
+T6	Context 163 197	Un investisseur tolérant au risque
+T7	Option 207 223	retient un fonds
+T8	Context 230 272	il combine rendement élevé et risque élevé
+E1	rule:T1 Condition:T2 Effect:T1
+E2	rule:T4 Condition:T3 Condition:T5 Effect:T4
+E3	rule:T7 Condition:T6 Condition:T8 Effect:T7

@@ -1,0 +1,10 @@
+T1	Context 6 43	une œuvre présente des micro-fissures
+T2	Option 45 72	la restauration est engagée
+T3	Context 80 129	le prêt est demandé par une institution étrangère
+T4	Option 131 159	un constat d'état est établi
+T5	Context 167 199	le constat signale une fragilité
+T6	Option 201 225	le prêt doit être refusé
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T4 Condition:T3 Effect:T4
+E3	rule:T6 Condition:T5 Effect:T6
+A1	Modality T6 obligatory

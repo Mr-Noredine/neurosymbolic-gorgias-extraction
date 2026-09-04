@@ -1,0 +1,86 @@
+#!/bin/bash
+# Point d'entrée unique du projet.
+#
+#   ./run mon_texte.txt                annote en LPP (défaut)
+#   ./run mon_texte.txt --brat         annote en brat (.ann)
+#   ./run mon_texte.txt --modele X     autre modèle Ollama
+#
+# Le script vérifie l'environnement AVANT de lancer quoi que ce soit : une
+# annotation qui échoue au bout de dix minutes parce qu'Ollama n'était pas
+# démarré coûte plus cher que le contrôle.
+set -u
+cd "$(dirname "$0")"
+
+rouge()  { printf '\033[31m%s\033[0m\n' "$*" >&2; }
+info()   { printf '\033[2m%s\033[0m\n' "$*" >&2; }
+
+MODELE="qwen3:8b"
+commande="${1:-}"
+
+# L'AIDE D'ABORD. Sur un dépôt fraîchement cloné il n'y a pas encore de .venv,
+# et c'est exactement le moment où l'on a besoin de lire ce qui suit.
+case "$commande" in
+  ""|-h|--help|aide)
+      sed -n '2,8p' "$0" | sed 's/^# \{0,1\}//'
+      exit 0 ;;
+esac
+
+# --- environnement ----------------------------------------------------------
+if [ ! -d .venv ]; then
+    rouge "environnement absent."
+    cat >&2 <<'AIDE'
+
+  python3 -m venv .venv && source .venv/bin/activate
+  pip install -e .
+  python -m spacy download fr_core_news_lg
+AIDE
+    exit 1
+fi
+source .venv/bin/activate
+
+exige_ollama() {
+    if ! command -v ollama >/dev/null 2>&1; then
+        rouge "ollama introuvable — voir https://ollama.com"
+        exit 1
+    fi
+    if ! ollama list >/dev/null 2>&1; then
+        rouge "le serveur Ollama ne répond pas. Démarrez-le :  ollama serve"
+        exit 1
+    fi
+    if ! ollama list | grep -q "^${1%%:*}"; then
+        rouge "modèle « $1 » absent. Récupérez-le :  ollama pull $1"
+        exit 1
+    fi
+}
+
+# --- annotation d'un fichier ------------------------------------------------
+fichier="$commande"
+shift || true
+
+if [ ! -f "$fichier" ]; then
+    rouge "fichier introuvable : $fichier"
+    exit 1
+fi
+
+format="lpp"
+extra=()
+while [ $# -gt 0 ]; do
+    case "$1" in
+      --brat) format="brat" ;;
+      --lpp)  format="lpp" ;;
+      --modele) shift; MODELE="${1:-$MODELE}" ;;
+      *) extra+=("$1") ;;
+    esac
+    shift
+done
+
+exige_ollama "$MODELE"
+sortie="${fichier%.*}.$( [ "$format" = brat ] && echo ann || echo lpp )"
+info "modèle $MODELE — sortie : $sortie"
+
+# GARDE-FOU. `app.py` écrit son résultat À CÔTÉ de son entrée. Lancé sur un
+# corpus de référence, il en écraserait les annotations sans rien signaler, et
+# les documents se mettraient à scorer parfaitement contre eux-mêmes. Travaillez
+# toujours sur une copie de vos données annotées.
+exec python3 -u -m gorgias.app "$fichier" --format "$format" --modele "$MODELE" \
+     --etage hybride ${extra[@]+"${extra[@]}"}

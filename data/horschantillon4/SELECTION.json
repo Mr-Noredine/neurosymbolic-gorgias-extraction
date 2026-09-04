@@ -1,0 +1,11 @@
+{
+  "source": "https://eur-lex.europa.eu/legal-content/FR/TXT/HTML/?uri=CELEX:32016R0679",
+  "sha256_page": "c6d9baf431c7a31437b010570b336a355c2fdd0d7a08990df75ec33b2acaab28",
+  "regle": "paragraphe numéroté d'article, 160-420 car., marqueur conditionnel, phrase autonome ; pris dans l'ordre du document",
+  "rang_debut": 31,
+  "nombre": 10,
+  "source_html": "copie gelée SHA-256 c6d9baf431c7a31437b010570b336a355c2fdd0d7a08990df75ec33b2acaab28",
+  "reproduction": "python3 data/horschantillon/selectionner.py --debut 31 --nombre 10 --sortie data/horschantillon4 --source-html COPIE_C6D9...HTML",
+  "annotation": "data/horschantillon4/annoter.py — annotateur unique, écrite avant toute exécution système",
+  "pourquoi_un_quatrieme_lot": "le lot 21-30 a été inspecté pour diagnostiquer la généralisation ; 31-40 est gelé avant toute correction"
+}

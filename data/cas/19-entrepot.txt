@@ -1,0 +1,1 @@
+Quand un lot arrive sans bon de livraison, il est placé en zone d'attente. Quand un lot reste en zone d'attente plus de sept jours, il est renvoyé au fournisseur. Puisque le renvoi entraîne des frais, le service achats doit être averti avant l'expédition.

@@ -1,0 +1,9 @@
+T1	Option 0 28	le tour d'eau est réorganisé
+T2	Context 34 73	la nappe descend sous le seuil d'alerte
+T3	Option 81 113	le pompage agricole est suspendu
+T4	Option 131 173	une dérogation est accordée aux maraîchers
+E1	rule:T1 Condition:T2 Effect:T1
+E2	rule:T3 Condition:T1 Effect:T3
+E3	rule:T4 Condition:T3 Effect:T4
+A1	Modality T3 obligatory
+A2	Modality T4 permitted

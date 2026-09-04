@@ -1,0 +1,1 @@
+Comme la charge dépasse la capacité du transformateur, le délestage est déclenché. Dès lors, l'exploitation peut se poursuivre en mode dégradé.

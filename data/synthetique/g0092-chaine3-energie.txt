@@ -1,0 +1,1 @@
+Quand un défaut d'isolement est détecté sur la ligne, la maintenance est avancée. Il s'ensuit que le délestage est déclenché. Dès lors, l'exploitation peut se poursuivre en mode dégradé. Par ailleurs, les pylônes longent la départementale.

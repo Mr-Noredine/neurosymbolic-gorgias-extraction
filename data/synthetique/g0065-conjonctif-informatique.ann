@@ -1,0 +1,4 @@
+T1	Context 6 52	le certificat expire dans quarante-huit heures
+T2	Context 60 91	la sauvegarde nocturne a échoué
+T3	Option 93 120	une restauration est lancée
+E1	rule:T3 Condition:T1 Condition:T2 Effect:T3

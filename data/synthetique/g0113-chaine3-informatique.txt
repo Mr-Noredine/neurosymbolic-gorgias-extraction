@@ -1,0 +1,1 @@
+Puisque la sauvegarde nocturne a échoué, une restauration est lancée. Dès lors, la mise en production est bloquée. Par conséquent, l'astreinte peut être sollicitée. Cependant, les baies datent de la précédente migration. Cependant, le badge d'accès a été renouvelé.

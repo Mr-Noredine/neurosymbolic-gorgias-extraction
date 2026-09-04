@@ -1,0 +1,5 @@
+T1	Context 6 56	le manuscrit dépasse de cent pages le format prévu
+T2	Context 64 95	la traduction n'a pas été relue
+T3	Option 97 132	une relecture externe est commandée
+E1	rule:T3 Condition:T1 Condition:T2 Effect:T3
+A1	Modality T3 recommended

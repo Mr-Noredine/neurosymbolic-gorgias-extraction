@@ -1,0 +1,1 @@
+Quand un convive déclare une allergie, un menu de substitution est préparé. Quand le fournisseur change de recette, la fiche allergènes est mise à jour. Comme la fiche n'a pas été actualisée, le plat concerné doit être retiré du service.

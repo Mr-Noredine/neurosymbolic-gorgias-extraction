@@ -1,0 +1,1 @@
+Quand une commande dépasse mille euros, le service applique une remise. Quand le client est nouveau, le service demande un paiement d'avance. Pour un client stratégique, la remise l'emporte sur le paiement d'avance.

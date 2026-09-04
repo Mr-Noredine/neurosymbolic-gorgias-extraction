@@ -1,0 +1,4 @@
+ANNA. Le prototype tient la charge, nous pouvons livrer vendredi.
+BRUNO. Deux tests d'intégration restent rouges, il faut repousser la livraison.
+ANNA. Ces tests portent sur un module que le client n'utilise pas.
+CLARA. En phase pilote, la date annoncée prime sur la couverture de tests.

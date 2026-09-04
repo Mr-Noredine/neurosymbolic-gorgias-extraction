@@ -1,0 +1,77 @@
+T1	Context 353 453	Lorsqu’un drone détecte une température anormalement élevée ou une concentration importante de fumée
+T2	Option 455 521	il transmet immédiatement une alerte aux drones situés à proximité
+T3	Context 523 559	Le drone ayant effectué la détection
+T4	Option 560 626	conserve normalement la responsabilité de l’observation de la zone
+T5	Context 629 672	Si plusieurs drones détectent le même foyer
+T6	Option 674 768	celui disposant de la meilleure qualité d’image est chargé de suivre précisément son évolution
+T7	Option 770 843	Les autres drones doivent alors continuer à surveiller les zones voisines
+T8	Context 984 1036	Lorsqu’un drone dispose de moins de 20 % de batterie
+T9	Option 1038 1098	il évite les missions nécessitant une surveillance prolongée
+T10	Context 1100 1120	Dans cette situation
+T11	Option 1122 1223	la responsabilité du suivi doit être transférée à un autre drone disposant d’une autonomie suffisante
+T12	Marker 1225 1232	même si
+T13	Context 1361 1390	lorsque la liaison est stable
+T14	Option 1302 1360	Les communications directes entre drones sont privilégiées
+T15	Marker 1439 1448	Toutefois
+T16	Context 1450 1541	lorsque deux drones ne peuvent plus communiquer directement pendant plus de trente secondes
+T17	Option 1543 1600	ils doivent tenter d’utiliser un autre drone comme relais
+T18	Context 1602 1634	Si aucun relais n’est disponible
+T19	Option 1636 1701	les informations critiques sont envoyées à la station de contrôle
+T20	Context 1772 1797	Pour économiser l’énergie
+T21	Option 1799 1907	les drones évitent généralement d’utiliser la station de contrôle comme relais pour les messages non urgents
+T22	Context 1921 1969	concernant un risque immédiat pour des personnes
+T23	Option 1985 2004	toujours transmises
+T24	Marker 1975 1984	néanmoins
+T25	Context 2006 2085	même lorsque leur transmission entraîne une consommation énergétique importante
+T26	Context 2088 2159	Lorsqu’un drone identifie une personne dans une zone menacée par le feu
+T27	Marker 2186 2219	devient prioritaire par rapport à
+T28	Context 2363 2412	si aucun autre drone n’est disponible à proximité
+T29	Option 2261 2362	Un drone déjà engagé dans le suivi du foyer peut donc être réaffecté à la localisation de la personne
+T30	Marker 2415 2426	En revanche
+T31	Context 2428 2475	un drone dont la batterie est inférieure à 10 %
+T32	Option 2476 2522	ne doit pas être envoyé vers une nouvelle zone
+T33	Context 2727 2804	Lorsqu’ils prévoient que leurs trajectoires vont se croiser à faible distance
+T34	Option 2806 2884	le drone situé à l’altitude la plus élevée conserve normalement sa trajectoire
+T35	Marker 2938 2957	n’est pas appliquée
+T36	Context 2958 3009	lorsqu’un des drones transporte du matériel médical
+T37	Option 3024 3112	le drone transportant le matériel conserve sa trajectoire indépendamment de son altitude
+T38	Context 3115 3176	Si deux drones transportent tous les deux du matériel médical
+T39	Option 3178 3259	celui dont la livraison est considérée comme la plus urgente conserve la priorité
+T40	Context 3261 3322	Lorsque les deux missions présentent le même niveau d’urgence
+T41	Option 3324 3365	le drone ayant la batterie la plus faible
+T42	Marker 3366 3381	est prioritaire
+T43	Context 3465 3585	lorsqu’un ordre provenant de la station de contrôle entre en contradiction avec une décision locale prise par les drones
+T44	Option 3587 3636	l’ordre de la station est normalement prioritaire
+T45	Marker 3657 3666	néanmoins
+T46	Context 3700 3810	lorsqu’ils détectent qu’il provoquerait une collision imminente ou mettrait directement en danger une personne
+T47	Option 3667 3699	ignorer temporairement cet ordre
+T48	Context 3871 3905	dès que la communication le permet
+T49	Option 3812 3870	Ils doivent alors informer la station de la décision prise
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T4 Condition:T3 Effect:T4
+E3	rule:T6 Condition:T5 Effect:T6
+E4	rule:T7 Condition:T5 Effect:T7
+E5	rule:T9 Condition:T8 Effect:T9
+E6	rule:T11 Condition:T10 Effect:T11
+E7	rule:T14 Condition:T13 Effect:T14
+E8	rule:T17 Condition:T16 Effect:T17
+E9	rule:T19 Condition:T18 Effect:T19
+E10	rule:T21 Condition:T20 Effect:T21
+E11	rule:T23 Condition:T22 Effect:T23
+E12	rule:T29 Condition:T28 Effect:T29
+E13	rule:T32 Condition:T31 Effect:T32
+E14	rule:T34 Condition:T33 Effect:T34
+E15	rule:T37 Condition:T36 Effect:T37
+E16	rule:T39 Condition:T38 Effect:T39
+E17	rule:T41 Condition:T40 Effect:T41
+E18	rule:T44 Condition:T43 Effect:T44
+E19	rule:T47 Condition:T46 Effect:T47
+E20	rule:T49 Condition:T48 Effect:T49
+E21	prefer:T12 Winner:E6 Loser:E3 When:T8
+E22	prefer:T15 Winner:E8 Loser:E7 When:T16
+E23	prefer:T24 Winner:E11 Loser:E10 When:T25
+E24	prefer:T27 Winner:E12 Loser:E3 When:T26
+E25	prefer:T30 Winner:E13 Loser:E12 When:T31
+E26	prefer:T35 Winner:E15 Loser:E14 When:T36
+E27	prefer:T42 Winner:E17 Loser:E16 When:T40
+E28	prefer:T45 Winner:E19 Loser:E18 When:T46

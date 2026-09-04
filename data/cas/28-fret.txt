@@ -1,0 +1,1 @@
+Quand la marchandise est périssable, le camion frigorifique est affrété. Quand le volume est massif, la péniche est affrétée. Pour une denrée fraîche, le camion prime sur la péniche.

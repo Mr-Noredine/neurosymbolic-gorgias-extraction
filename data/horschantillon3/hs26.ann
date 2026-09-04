@@ -1,0 +1,5 @@
+T1	Context 5 68	En l'absence de décision en vertu de l'article 45, paragraphe 3
+T2	Option 70 227	le responsable du traitement ou le sous-traitant ne peut transférer des données à caractère personnel vers un pays tiers ou à une organisation internationale
+T3	Context 234 270	il a prévu des garanties appropriées
+T4	Context 293 380	les personnes concernées disposent de droits opposables et de voies de droit effectives
+E1	rule:T2 Condition:T1 Condition:T3 Condition:T4 Effect:T2

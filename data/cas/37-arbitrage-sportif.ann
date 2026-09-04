@@ -1,0 +1,12 @@
+T1	Context 6 31	la faute est involontaire
+T2	Option 33 58	l'avertissement est donné
+T3	Context 66 88	le geste est dangereux
+T4	Option 90 115	l'exclusion est prononcée
+T5	Context 117 132	En phase finale
+T6	Marker 146 155	prime sur
+T7	Context 173 188	En match amical
+T8	Marker 206 219	l'emporte sur
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T4 Condition:T3 Effect:T4
+E3	prefer:T6 Winner:E2 Loser:E1 When:T5
+E4	prefer:T8 Winner:E1 Loser:E2 When:T7

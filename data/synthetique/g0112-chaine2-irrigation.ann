@@ -1,0 +1,6 @@
+T1	Context 6 45	la nappe descend sous le seuil d'alerte
+T2	Option 47 75	le tour d'eau est réorganisé
+T3	Option 83 125	une dérogation est accordée aux maraîchers
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T3 Condition:T2 Effect:T3
+A1	Modality T3 permitted

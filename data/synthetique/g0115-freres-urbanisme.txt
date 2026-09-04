@@ -1,0 +1,1 @@
+Quand le terrain se situe en zone inondable, nous retenons la rénovation. la parcelle jouxte un monument classé : nous retenons la démolition. En secteur sauvegardé, la rénovation l'emporte sur la démolition. Pour un bâtiment vacant, la démolition prime sur la rénovation. En revanche, les platanes ont été élagués en février.

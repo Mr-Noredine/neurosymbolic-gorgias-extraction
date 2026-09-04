@@ -1,0 +1,4 @@
+T1	Context 6 52	le certificat expire dans quarante-huit heures
+T2	Context 60 95	le disque de destination est saturé
+T3	Option 97 124	une restauration est lancée
+E1	rule:T3 Condition:T1 Condition:T2 Effect:T3

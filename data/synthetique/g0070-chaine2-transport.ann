@@ -1,0 +1,6 @@
+T1	Context 8 33	la chaussée est verglacée
+T2	Option 35 60	le péage peut être ouvert
+T3	Option 78 101	la vitesse est abaissée
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T3 Condition:T2 Effect:T3
+A1	Modality T2 permitted

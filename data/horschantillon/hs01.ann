@@ -1,0 +1,3 @@
+T1	Context 18 67	déterminer si le consentement est donné librement
+T2	Option 69 349	il y a lieu de tenir le plus grand compte de la question de savoir, entre autres, si l'exécution d'un contrat, y compris la fourniture d'un service, est subordonnée au consentement au traitement de données à caractère personnel qui n'est pas nécessaire à l'exécution dudit contrat
+E1	rule:T2 Condition:T1 Effect:T2

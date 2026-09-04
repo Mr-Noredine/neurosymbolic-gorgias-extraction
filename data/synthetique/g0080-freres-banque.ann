@@ -1,0 +1,12 @@
+T1	Context 8 57	les revenus varient fortement d'un mois à l'autre
+T2	Option 59 85	nous retenons le taux fixe
+T3	Context 95 136	un incident de paiement figure au dossier
+T4	Option 138 168	nous retenons le taux variable
+T5	Context 170 192	Pour un primo-accédant
+T6	Marker 207 216	prime sur
+T7	Context 235 253	En marché baissier
+T8	Marker 272 285	l'emporte sur
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T4 Condition:T3 Effect:T4
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5
+E4	prefer:T8 Winner:E2 Loser:E1 When:T7

@@ -1,0 +1,5 @@
+T1	Context 6 44	la palette présente un emballage percé
+T2	Context 52 95	le camion arrive après la fermeture du quai
+T3	Option 97 126	une réserve est portée au bon
+E1	rule:T3 Condition:T1 Condition:T2 Effect:T3
+A1	Modality T3 recommended

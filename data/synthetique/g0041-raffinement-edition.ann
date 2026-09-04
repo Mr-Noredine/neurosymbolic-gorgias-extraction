@@ -1,0 +1,13 @@
+T1	Context 0 45	les droits iconographiques ne sont pas réglés
+T2	Option 48 76	nous sortons en grand format
+T3	Context 84 134	le manuscrit dépasse de cent pages le format prévu
+T4	Option 136 157	nous sortons en poche
+T5	Context 159 180	Pour un premier roman
+T6	Marker 198 209	prévaut sur
+T7	Context 225 246	en rentrée littéraire
+T8	Marker 257 268	passe avant
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T4 Condition:T3 Effect:T4
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5
+E4	prefer:T8 Winner:E2 Loser:E1 When:T7
+E5	meta_prefer:T8 Winner:E4 Loser:E3 When:T7

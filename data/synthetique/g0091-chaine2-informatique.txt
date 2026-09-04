@@ -1,0 +1,1 @@
+Lorsque le disque de destination est saturé, l'astreinte peut être sollicitée. Il s'ensuit que la mise en production est bloquée. En revanche, la salle machine occupe le sous-sol.

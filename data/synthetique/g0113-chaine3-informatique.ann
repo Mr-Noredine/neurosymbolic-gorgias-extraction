@@ -1,0 +1,9 @@
+T1	Context 8 39	la sauvegarde nocturne a échoué
+T2	Option 41 68	une restauration est lancée
+T3	Option 80 113	la mise en production est bloquée
+T4	Option 131 163	l'astreinte peut être sollicitée
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T3 Condition:T2 Effect:T3
+E3	rule:T4 Condition:T3 Effect:T4
+A1	Modality T3 obligatory
+A2	Modality T4 permitted

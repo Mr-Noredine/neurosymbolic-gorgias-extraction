@@ -1,0 +1,7 @@
+T1	Context 8 54	le certificat expire dans quarante-huit heures
+T2	Option 56 89	la mise en production est bloquée
+T3	Option 107 139	l'astreinte peut être sollicitée
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T3 Condition:T2 Effect:T3
+A1	Modality T2 obligatory
+A2	Modality T3 permitted

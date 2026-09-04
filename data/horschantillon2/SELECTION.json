@@ -1,0 +1,23 @@
+{
+  "source": "https://eur-lex.europa.eu/legal-content/FR/TXT/HTML/?uri=CELEX:32016R0679",
+  "sha256_page": "c6d9baf431c7a31437b010570b336a355c2fdd0d7a08990df75ec33b2acaab28",
+  "regle": "paragraphe numéroté d'article, 160-420 car., marqueur conditionnel, phrase autonome ; pris dans l'ordre du document",
+  "rang_debut": 11,
+  "nombre": 10,
+  "reproduction": "python3 data/horschantillon/selectionner.py --debut 11 --nombre 10 --sortie data/horschantillon2",
+  "verifie": "le même script au rang 1 reproduit les dix documents de data/horschantillon À L'OCTET PRÈS (10/10)",
+  "annotation": "data/horschantillon2/annoter.py — annotateur unique",
+  "pourquoi_un_second_lot": "les dix premiers ont servi à diagnostiquer puis corriger deux défauts réels : ils ne mesurent plus la généralisation",
+  "documents": [
+    "4.   Les décisions visées au paragraphe 2 ne peuvent être fondées sur les catégories particulières de données à caractère personnel visées à l'article 9, paragraphe 1, à moins que l'article 9, paragraphe 2, point a) ou g), ne s'applique et que des mesures appropriées pour la sauvegarde des droits et libertés et des intérêts légitimes de la personne concernée ne soient en place.",
+    "2.   Lorsque cela est proportionné au regard des activités de traitement, les mesures visées au paragraphe 1 comprennent la mise en œuvre de politiques appropriées en matière de protection des données par le responsable du traitement.",
+    "1.   Lorsqu'un traitement doit être effectué pour le compte d'un responsable du traitement, celui-ci fait uniquement appel à des sous-traitants qui présentent des garanties suffisantes quant à la mise en œuvre de mesures techniques et organisationnelles appropriées de manière à ce que le traitement réponde aux exigences du présent règlement et garantisse la protection des droits de la personne concernée.",
+    "10.   Sans préjudice des articles 82, 83 et 84, si, en violation du présent règlement, un sous-traitant détermine les finalités et les moyens du traitement, il est considéré comme un responsable du traitement pour ce qui concerne ce traitement.",
+    "4.   Si, et dans la mesure où, il n'est pas possible de fournir toutes les informations en même temps, les informations peuvent être communiquées de manière échelonnée sans autre retard indu.",
+    "1.   Lorsqu'une violation de données à caractère personnel est susceptible d'engendrer un risque élevé pour les droits et libertés d'une personne physique, le responsable du traitement communique la violation de données à caractère personnel à la personne concernée dans les meilleurs délais.",
+    "2.   Lorsqu'il effectue une analyse d'impact relative à la protection des données, le responsable du traitement demande conseil au délégué à la protection des données, si un tel délégué a été désigné.",
+    "11.   Si nécessaire, le responsable du traitement procède à un examen afin d'évaluer si le traitement est effectué conformément à l'analyse d'impact relative à la protection des données, au moins quand il se produit une modification du risque présenté par les opérations de traitement.",
+    "1.   Le responsable du traitement consulte l'autorité de contrôle préalablement au traitement lorsqu'une analyse d'impact relative à la protection des données effectuée au titre de l'article 35 indique que le traitement présenterait un risque élevé si le responsable du traitement ne prenait pas de mesures pour atténuer le risque.",
+    "3.   Lorsque le responsable du traitement ou le sous-traitant est une autorité publique ou un organisme public, un seul délégué à la protection des données peut être désigné pour plusieurs autorités ou organismes de ce type, compte tenu de leur structure organisationnelle et de leur taille."
+  ]
+}

@@ -1,0 +1,4 @@
+T1	Option 0 18	le taux est majoré
+T2	Context 33 73	l'apport reste inférieur à dix pour cent
+T3	Context 81 130	les revenus varient fortement d'un mois à l'autre
+E1	rule:T1 Condition:T2 Condition:T3 Effect:T1

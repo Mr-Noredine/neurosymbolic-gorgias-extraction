@@ -1,0 +1,1 @@
+Lorsque les revenus varient fortement d'un mois à l'autre, nous retenons le taux fixe. Puisque un incident de paiement figure au dossier, nous retenons le taux variable. Pour un primo-accédant, le taux fixe prime sur le taux variable. En marché baissier, le taux variable l'emporte sur le taux fixe.

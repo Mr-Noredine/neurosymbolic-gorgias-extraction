@@ -1,0 +1,3 @@
+T1	Option 21 185	le responsable du traitement procède à un examen afin d'évaluer si le traitement est effectué conformément à l'analyse d'impact relative à la protection des données
+T2	Context 202 284	il se produit une modification du risque présenté par les opérations de traitement
+E1	rule:T1 Condition:T2 Effect:T1

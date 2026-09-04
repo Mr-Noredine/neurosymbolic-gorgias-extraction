@@ -1,0 +1,9 @@
+T1	Option 0 26	le traitement est appliqué
+T2	Context 32 75	un foyer de mildiou est signalé à proximité
+T3	Option 93 113	le semis est reporté
+T4	Option 125 155	la parcelle doit être déclarée
+E1	rule:T1 Condition:T2 Effect:T1
+E2	rule:T3 Condition:T1 Effect:T3
+E3	rule:T4 Condition:T3 Effect:T4
+A1	Modality T3 recommended
+A2	Modality T4 obligatory

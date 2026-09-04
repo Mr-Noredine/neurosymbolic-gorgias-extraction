@@ -1,0 +1,7 @@
+T1	Context 8 43	le disque de destination est saturé
+T2	Option 45 77	l'astreinte peut être sollicitée
+T3	Option 95 128	la mise en production est bloquée
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T3 Condition:T2 Effect:T3
+A1	Modality T2 permitted
+A2	Modality T3 obligatory

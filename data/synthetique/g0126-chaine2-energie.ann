@@ -1,0 +1,7 @@
+T1	Context 6 53	la charge dépasse la capacité du transformateur
+T2	Option 55 81	le délestage est déclenché
+T3	Option 93 142	l'exploitation peut se poursuivre en mode dégradé
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T3 Condition:T2 Effect:T3
+A1	Modality T2 obligatory
+A2	Modality T3 permitted

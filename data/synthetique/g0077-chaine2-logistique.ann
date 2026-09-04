@@ -1,0 +1,6 @@
+T1	Context 6 44	la palette présente un emballage percé
+T2	Option 46 72	le déchargement est refusé
+T3	Option 84 113	une réserve est portée au bon
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T3 Condition:T2 Effect:T3
+A1	Modality T3 recommended

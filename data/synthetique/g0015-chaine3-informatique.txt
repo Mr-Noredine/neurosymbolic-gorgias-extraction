@@ -1,0 +1,1 @@
+une restauration est lancée, car le certificat expire dans quarante-huit heures. Aussi l'astreinte peut être sollicitée. Dès lors, la mise en production est bloquée.

@@ -1,0 +1,13 @@
+T1	Option 0 28	nous sortons en grand format
+T2	Context 34 65	la traduction n'a pas été relue
+T3	Option 67 88	nous sortons en poche
+T4	Context 94 144	le manuscrit dépasse de cent pages le format prévu
+T5	Context 146 167	Pour un premier roman
+T6	Marker 185 196	passe avant
+T7	Context 212 233	en rentrée littéraire
+T8	Marker 244 253	prime sur
+E1	rule:T1 Condition:T2 Effect:T1
+E2	rule:T3 Condition:T4 Effect:T3
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5
+E4	prefer:T8 Winner:E2 Loser:E1 When:T7
+E5	meta_prefer:T8 Winner:E4 Loser:E3 When:T7

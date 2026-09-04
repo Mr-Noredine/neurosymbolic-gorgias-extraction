@@ -1,0 +1,5 @@
+T1	Option 0 26	le délestage est déclenché
+T2	Context 41 88	la charge dépasse la capacité du transformateur
+T3	Context 96 142	un défaut d'isolement est détecté sur la ligne
+E1	rule:T1 Condition:T2 Condition:T3 Effect:T1
+A1	Modality T1 obligatory

@@ -1,0 +1,5 @@
+T1	Context 8 45	un ouvrage d'art présente une fissure
+T2	Context 53 94	le trafic double par rapport à la moyenne
+T3	Option 96 121	le péage peut être ouvert
+E1	rule:T3 Condition:T1 Condition:T2 Effect:T3
+A1	Modality T3 permitted

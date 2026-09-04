@@ -1,0 +1,9 @@
+T1	Context 6 43	le terrain se situe en zone inondable
+T2	Option 45 72	nous retenons la rénovation
+T3	Option 74 101	nous retenons la démolition
+T4	Context 111 152	le plan local interdit toute surélévation
+T5	Context 154 175	En secteur sauvegardé
+T6	Marker 191 200	prime sur
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T3 Condition:T4 Effect:T3
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5

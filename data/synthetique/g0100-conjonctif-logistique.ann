@@ -1,0 +1,4 @@
+T1	Option 0 26	le déchargement est refusé
+T2	Context 41 84	le camion arrive après la fermeture du quai
+T3	Context 92 144	le bon de livraison ne mentionne aucun numéro de lot
+E1	rule:T1 Condition:T2 Condition:T3 Effect:T1

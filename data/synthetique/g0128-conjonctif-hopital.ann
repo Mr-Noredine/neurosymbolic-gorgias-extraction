@@ -1,0 +1,5 @@
+T1	Context 6 43	le délai d'attente atteint six heures
+T2	Context 51 91	le service dépasse sa capacité d'accueil
+T3	Option 93 120	le plan blanc est déclenché
+E1	rule:T3 Condition:T1 Condition:T2 Effect:T3
+A1	Modality T3 obligatory

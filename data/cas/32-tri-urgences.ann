@@ -1,0 +1,9 @@
+T1	Context 6 28	la douleur est intense
+T2	Option 30 57	l'antalgique est administré
+T3	Context 65 94	le diagnostic reste incertain
+T4	Option 96 119	l'imagerie est demandée
+T5	Context 121 152	En cas de suspicion de fracture
+T6	Marker 165 174	prime sur
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T4 Condition:T3 Effect:T4
+E3	prefer:T6 Winner:E2 Loser:E1 When:T5

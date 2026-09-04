@@ -1,0 +1,5 @@
+T1	Option 0 32	l'exposition peut être prolongée
+T2	Context 47 82	l'œuvre présente des micro-fissures
+T3	Context 90 135	l'hygrométrie de la salle sort des tolérances
+E1	rule:T1 Condition:T2 Condition:T3 Effect:T1
+A1	Modality T1 permitted

@@ -1,0 +1,1 @@
+La sauvegarde nocturne a échoué trois nuits de suite. Le disque de destination est saturé. La restauration ne peut donc plus être garantie. L'équipe doit déclencher la procédure d'incident.

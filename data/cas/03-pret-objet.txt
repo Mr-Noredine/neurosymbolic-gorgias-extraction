@@ -1,0 +1,1 @@
+Un employé prête l'objet demandé à qui le lui demande. S'il en a lui-même besoin, il le garde. Une demande venant d'un supérieur hiérarchique l'emporte sur son propre besoin. Mais lorsque son besoin est urgent, ce besoin prime sur la demande du supérieur.

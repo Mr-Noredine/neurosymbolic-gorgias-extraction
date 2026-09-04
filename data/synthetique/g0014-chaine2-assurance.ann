@@ -1,0 +1,7 @@
+T1	Option 0 27	l'indemnisation est réduite
+T2	Context 37 81	le sinistre relève d'un événement climatique
+T3	Option 99 137	le relogement peut être pris en charge
+E1	rule:T1 Condition:T2 Effect:T1
+E2	rule:T3 Condition:T1 Effect:T3
+A1	Modality T1 obligatory
+A2	Modality T3 permitted

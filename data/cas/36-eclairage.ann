@@ -1,0 +1,12 @@
+T1	Context 6 25	la rue est passante
+T2	Option 27 58	l'éclairage renforcé est retenu
+T3	Context 66 91	la zone est résidentielle
+T4	Option 93 122	l'éclairage tamisé est retenu
+T5	Context 124 139	En centre-ville
+T6	Marker 162 171	prime sur
+T7	Context 192 205	En périphérie
+T8	Marker 226 239	l'emporte sur
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T4 Condition:T3 Effect:T4
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5
+E4	prefer:T8 Winner:E2 Loser:E1 When:T7

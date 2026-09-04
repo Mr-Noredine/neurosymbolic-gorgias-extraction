@@ -1,0 +1,13 @@
+T1	Context 8 43	le disque de destination est saturé
+T2	Option 45 78	nous hébergeons sur serveur dédié
+T3	Context 86 132	le certificat expire dans quarante-huit heures
+T4	Option 134 163	nous hébergeons dans le cloud
+T5	Context 165 189	Pour un budget contraint
+T6	Marker 208 219	passe avant
+T7	Context 235 256	en forte saisonnalité
+T8	Marker 267 278	prévaut sur
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T4 Condition:T3 Effect:T4
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5
+E4	prefer:T8 Winner:E2 Loser:E1 When:T7
+E5	meta_prefer:T8 Winner:E4 Loser:E3 When:T7

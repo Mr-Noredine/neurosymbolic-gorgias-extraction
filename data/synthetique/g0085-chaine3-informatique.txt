@@ -1,0 +1,1 @@
+Quand le certificat expire dans quarante-huit heures, l'astreinte peut être sollicitée. Aussi la mise en production est bloquée. Aussi une restauration est lancée. En revanche, la salle machine occupe le sous-sol. les baies datent de la précédente migration.

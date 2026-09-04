@@ -1,0 +1,12 @@
+T1	Context 8 53	l'hygrométrie de la salle sort des tolérances
+T2	Option 55 79	nous exposons en vitrine
+T3	Option 81 105	nous exposons en cimaise
+T4	Context 111 161	le constat d'état signale une fragilité du support
+T5	Context 163 185	Pour une pièce fragile
+T6	Marker 198 209	passe avant
+T7	Context 222 244	En période d'affluence
+T8	Marker 257 266	prime sur
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T3 Condition:T4 Effect:T3
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5
+E4	prefer:T8 Winner:E2 Loser:E1 When:T7

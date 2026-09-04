@@ -1,0 +1,1 @@
+Puisque la sauvegarde nocturne a échoué et que le certificat expire dans quarante-huit heures, la mise en production est bloquée. Cependant, les baies datent de la précédente migration. Par ailleurs, le badge d'accès a été renouvelé.

@@ -1,0 +1,4 @@
+T1	Context 125 180	la fièvre dépasse trente-neuf degrés depuis trois jours
+T2	Option 182 221	un examen complémentaire est recommandé
+E1	rule:T2 Condition:T1 Effect:T2
+A1	Modality T2 recommended

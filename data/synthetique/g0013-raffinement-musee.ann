@@ -1,0 +1,13 @@
+T1	Context 6 41	l'œuvre présente des micro-fissures
+T2	Option 43 67	nous exposons en vitrine
+T3	Context 75 120	l'hygrométrie de la salle sort des tolérances
+T4	Option 122 146	nous exposons en cimaise
+T5	Context 148 170	Pour une pièce fragile
+T6	Marker 183 194	passe avant
+T7	Context 212 234	en période d'affluence
+T8	Marker 247 256	prime sur
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T4 Condition:T3 Effect:T4
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5
+E4	prefer:T8 Winner:E2 Loser:E1 When:T7
+E5	meta_prefer:T8 Winner:E4 Loser:E3 When:T7

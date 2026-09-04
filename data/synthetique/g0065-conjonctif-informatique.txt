@@ -1,0 +1,1 @@
+Comme le certificat expire dans quarante-huit heures et que la sauvegarde nocturne a échoué, une restauration est lancée. Par ailleurs, les baies datent de la précédente migration.

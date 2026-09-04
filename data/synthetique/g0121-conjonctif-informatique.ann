@@ -1,0 +1,5 @@
+T1	Option 0 32	l'astreinte peut être sollicitée
+T2	Context 47 82	le disque de destination est saturé
+T3	Context 90 121	la sauvegarde nocturne a échoué
+E1	rule:T1 Condition:T2 Condition:T3 Effect:T1
+A1	Modality T1 permitted

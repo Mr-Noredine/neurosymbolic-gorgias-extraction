@@ -1,0 +1,9 @@
+T1	Option 0 27	nous retenons la rénovation
+T2	Context 37 74	le terrain se situe en zone inondable
+T3	Context 76 113	la parcelle jouxte un monument classé
+T4	Option 116 143	nous retenons la démolition
+T5	Context 145 166	En secteur sauvegardé
+T6	Marker 182 195	l'emporte sur
+E1	rule:T1 Condition:T2 Effect:T1
+E2	rule:T4 Condition:T3 Effect:T4
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5

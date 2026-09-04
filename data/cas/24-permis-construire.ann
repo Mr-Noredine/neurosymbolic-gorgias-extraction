@@ -1,0 +1,8 @@
+T1	Context 6 42	la parcelle borde un monument classé
+T2	Context 50 90	la hauteur projetée dépasse douze mètres
+T3	Option 92 125	l'avis de l'architecte est requis
+T4	Context 135 159	cet avis est défavorable
+T5	Option 161 191	le permis est refusé en l'état
+E1	rule:T3 Condition:T1 Condition:T2 Effect:T3
+E2	rule:T5 Condition:T4 Effect:T5
+A1	Modality T3 obligatory

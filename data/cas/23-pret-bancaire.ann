@@ -1,0 +1,9 @@
+T1	Context 8 40	l'apport atteint vingt pour cent
+T2	Context 48 88	les revenus sont stables depuis deux ans
+T3	Option 90 113	le dossier est éligible
+T4	Context 121 153	le bien est situé en zone tendue
+T5	Context 161 185	la surface reste modeste
+T6	Option 187 225	une garantie supplémentaire est exigée
+E1	rule:T3 Condition:T1 Condition:T2 Effect:T3
+E2	rule:T6 Condition:T4 Condition:T5 Effect:T6
+A1	Modality T6 obligatory

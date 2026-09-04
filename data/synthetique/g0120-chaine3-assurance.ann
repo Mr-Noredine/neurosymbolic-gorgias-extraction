@@ -1,0 +1,9 @@
+T1	Context 6 40	la déclaration parvient hors délai
+T2	Option 42 80	le relogement peut être pris en charge
+T3	Option 88 118	la franchise légale s'applique
+T4	Option 126 153	l'indemnisation est réduite
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T3 Condition:T2 Effect:T3
+E3	rule:T4 Condition:T3 Effect:T4
+A1	Modality T2 permitted
+A2	Modality T4 obligatory

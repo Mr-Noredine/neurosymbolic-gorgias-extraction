@@ -1,0 +1,6 @@
+T1	Context 8 52	le sinistre relève d'un événement climatique
+T2	Option 54 81	l'indemnisation est réduite
+T3	Option 99 129	la franchise légale s'applique
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T3 Condition:T2 Effect:T3
+A1	Modality T2 obligatory

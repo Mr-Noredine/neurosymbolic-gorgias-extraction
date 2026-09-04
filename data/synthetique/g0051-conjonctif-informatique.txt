@@ -1,0 +1,1 @@
+Comme le certificat expire dans quarante-huit heures et que le disque de destination est saturé, une restauration est lancée. Par ailleurs, le badge d'accès a été renouvelé. Cependant, les baies datent de la précédente migration.

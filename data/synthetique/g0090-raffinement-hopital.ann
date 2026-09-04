@@ -1,0 +1,13 @@
+T1	Context 8 54	deux infirmières manquent à l'effectif de nuit
+T2	Option 56 88	nous ouvrons le secteur de repli
+T3	Context 96 136	le service dépasse sa capacité d'accueil
+T4	Option 138 176	nous transférons vers l'hôpital voisin
+T5	Context 178 199	En période épidémique
+T6	Marker 221 232	passe avant
+T7	Context 252 259	la nuit
+T8	Marker 274 287	l'emporte sur
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T4 Condition:T3 Effect:T4
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5
+E4	prefer:T8 Winner:E2 Loser:E1 When:T7
+E5	meta_prefer:T8 Winner:E4 Loser:E3 When:T7

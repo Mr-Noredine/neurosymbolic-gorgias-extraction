@@ -1,0 +1,8 @@
+T1	Context 6 36	le retard dépasse trois heures
+T2	Context 44 75	la cause relève du transporteur
+T3	Option 77 110	une indemnité forfaitaire est due
+T4	Context 120 158	le passager a manqué sa correspondance
+T5	Option 160 193	un réacheminement lui est proposé
+E1	rule:T3 Condition:T1 Condition:T2 Effect:T3
+E2	rule:T5 Condition:T4 Effect:T5
+A1	Modality T3 obligatory

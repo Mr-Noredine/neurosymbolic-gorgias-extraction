@@ -1,0 +1,9 @@
+T1	Context 6 50	la charge dépasse quatre-vingt-dix pour cent
+T2	Option 52 89	le délestage automatique se déclenche
+T3	Context 97 148	le délestage coupe les ateliers avant les logements
+T4	Option 150 196	la production industrielle s'arrête en premier
+T5	Context 198 222	L'arrêt de la production
+T6	Option 223 262	justifie une compensation contractuelle
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T4 Condition:T3 Effect:T4
+E3	rule:T6 Condition:T5 Effect:T6

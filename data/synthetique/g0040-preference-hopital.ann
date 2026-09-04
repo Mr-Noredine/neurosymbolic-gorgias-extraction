@@ -1,0 +1,9 @@
+T1	Context 0 46	deux infirmières manquent à l'effectif de nuit
+T2	Option 49 81	nous ouvrons le secteur de repli
+T3	Context 83 120	le délai d'attente atteint six heures
+T4	Option 123 161	nous transférons vers l'hôpital voisin
+T5	Context 163 184	En période épidémique
+T6	Marker 206 215	prime sur
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T4 Condition:T3 Effect:T4
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5

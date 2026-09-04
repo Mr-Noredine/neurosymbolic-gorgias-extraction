@@ -1,0 +1,21 @@
+Une flotte de drones autonomes est déployée pour surveiller une zone forestière après plusieurs départs de feu signalés dans la région. Les drones communiquent entre eux par un réseau sans fil ad hoc et peuvent également transmettre certaines informations à la station de contrôle.
+
+Chaque drone possède une zone de surveillance initialement attribuée. Lorsqu’un drone détecte une température anormalement élevée ou une concentration importante de fumée, il transmet immédiatement une alerte aux drones situés à proximité. Le drone ayant effectué la détection conserve normalement la responsabilité de l’observation de la zone.
+
+Si plusieurs drones détectent le même foyer, celui disposant de la meilleure qualité d’image est chargé de suivre précisément son évolution. Les autres drones doivent alors continuer à surveiller les zones voisines afin d’éviter qu’une partie du secteur ne reste sans couverture.
+
+La qualité de l’image n’est cependant pas le seul critère pris en compte. Lorsqu’un drone dispose de moins de 20 % de batterie, il évite les missions nécessitant une surveillance prolongée. Dans cette situation, la responsabilité du suivi doit être transférée à un autre drone disposant d’une autonomie suffisante, même si la caméra de ce dernier fournit une image légèrement moins précise.
+
+Les communications directes entre drones sont privilégiées lorsque la liaison est stable, car elles permettent une réaction plus rapide. Toutefois, lorsque deux drones ne peuvent plus communiquer directement pendant plus de trente secondes, ils doivent tenter d’utiliser un autre drone comme relais. Si aucun relais n’est disponible, les informations critiques sont envoyées à la station de contrôle, qui peut ensuite les retransmettre aux autres membres de la flotte.
+
+Pour économiser l’énergie, les drones évitent généralement d’utiliser la station de contrôle comme relais pour les messages non urgents. Les alertes concernant un risque immédiat pour des personnes sont néanmoins toujours transmises, même lorsque leur transmission entraîne une consommation énergétique importante.
+
+Lorsqu’un drone identifie une personne dans une zone menacée par le feu, la recherche de victimes devient prioritaire par rapport à la cartographie détaillée de l’incendie. Un drone déjà engagé dans le suivi du foyer peut donc être réaffecté à la localisation de la personne si aucun autre drone n’est disponible à proximité.
+
+En revanche, un drone dont la batterie est inférieure à 10 % ne doit pas être envoyé vers une nouvelle zone, sauf lorsqu’il constitue le seul moyen disponible pour maintenir temporairement la communication avec un drone chargé d’une opération de secours.
+
+Les drones cherchent également à éviter les collisions. Lorsqu’ils prévoient que leurs trajectoires vont se croiser à faible distance, le drone situé à l’altitude la plus élevée conserve normalement sa trajectoire tandis que l’autre modifie son altitude. Cette règle n’est pas appliquée lorsqu’un des drones transporte du matériel médical. Dans ce cas, le drone transportant le matériel conserve sa trajectoire indépendamment de son altitude.
+
+Si deux drones transportent tous les deux du matériel médical, celui dont la livraison est considérée comme la plus urgente conserve la priorité. Lorsque les deux missions présentent le même niveau d’urgence, le drone ayant la batterie la plus faible est prioritaire afin de réduire la probabilité qu’il soit obligé d’interrompre sa mission.
+
+Enfin, lorsqu’un ordre provenant de la station de contrôle entre en contradiction avec une décision locale prise par les drones, l’ordre de la station est normalement prioritaire. Les drones peuvent néanmoins ignorer temporairement cet ordre lorsqu’ils détectent qu’il provoquerait une collision imminente ou mettrait directement en danger une personne. Ils doivent alors informer la station de la décision prise dès que la communication le permet.

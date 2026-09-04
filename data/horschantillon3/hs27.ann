@@ -1,0 +1,3 @@
+T1	Context 12 67	un État membre institue plusieurs autorités de contrôle
+T2	Option 69 292	il désigne celle qui représente ces autorités au comité et définit le mécanisme permettant de s'assurer du respect, par les autres autorités, des règles relatives au mécanisme de contrôle de la cohérence visé à l'article 63
+E1	rule:T2 Condition:T1 Effect:T2

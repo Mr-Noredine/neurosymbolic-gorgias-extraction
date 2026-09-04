@@ -1,0 +1,9 @@
+T1	Option 0 40	nous basculons sur le groupe électrogène
+T2	Context 46 93	la charge dépasse la capacité du transformateur
+T3	Context 95 141	un défaut d'isolement est détecté sur la ligne
+T4	Option 144 179	nous basculons sur le réseau voisin
+T5	Context 181 206	En pointe de consommation
+T6	Marker 218 229	prévaut sur
+E1	rule:T1 Condition:T2 Effect:T1
+E2	rule:T4 Condition:T3 Effect:T4
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5

@@ -1,0 +1,1 @@
+Comme le délai d'attente atteint six heures et que le service dépasse sa capacité d'accueil, le plan blanc est déclenché. Ensuite, le bâtiment compte quatre étages.

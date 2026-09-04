@@ -1,0 +1,12 @@
+T1	Option 0 21	nous prenons le train
+T2	Context 31 72	le trafic double par rapport à la moyenne
+T3	Option 74 97	nous prenons la voiture
+T4	Context 107 132	la chaussée est verglacée
+T5	Context 134 142	En hiver
+T6	Marker 153 164	prévaut sur
+T7	Context 177 197	Aux heures de pointe
+T8	Marker 210 219	prime sur
+E1	rule:T1 Condition:T2 Effect:T1
+E2	rule:T3 Condition:T4 Effect:T3
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5
+E4	prefer:T8 Winner:E2 Loser:E1 When:T7

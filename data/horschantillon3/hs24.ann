@@ -1,0 +1,5 @@
+T1	Option 38 212	l'autorité de contrôle compétente ou l'organisme national d'accréditation révoque l'agrément d'un organisme de certification en application du paragraphe 1 du présent article
+T2	Context 216 277	les conditions d'agrément ne sont pas ou ne sont plus réunies
+T3	Context 284 382	les mesures prises par l'organisme de certification constituent une violation du présent règlement
+E1	rule:T1 Condition:T2 Effect:T1
+E2	rule:T1 Condition:T3 Effect:T1

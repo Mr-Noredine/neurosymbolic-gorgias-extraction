@@ -1,0 +1,4 @@
+T1	Context 118 166	le prestataire n'a livré aucun jalon depuis mars
+T2	Option 168 196	le contrat peut être résilié
+E1	rule:T2 Condition:T1 Effect:T2
+A1	Modality T2 permitted

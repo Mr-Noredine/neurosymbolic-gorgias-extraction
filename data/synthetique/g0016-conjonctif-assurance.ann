@@ -1,0 +1,4 @@
+T1	Option 0 30	la franchise légale s'applique
+T2	Context 45 89	le sinistre relève d'un événement climatique
+T3	Context 97 140	l'expertise conclut à un défaut d'entretien
+E1	rule:T1 Condition:T2 Condition:T3 Effect:T1

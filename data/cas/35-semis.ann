@@ -1,0 +1,13 @@
+T1	Context 6 24	le sol est ressuyé
+T2	Option 26 54	le semis direct est pratiqué
+T3	Context 62 86	la parcelle est enherbée
+T4	Option 88 110	le labour est pratiqué
+T5	Context 112 127	En sol argileux
+T6	Marker 139 148	prime sur
+T7	Context 171 190	si l'érosion menace
+T8	Marker 208 221	l'emporte sur
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T4 Condition:T3 Effect:T4
+E3	prefer:T6 Winner:E2 Loser:E1 When:T5
+E4	prefer:T8 Winner:E1 Loser:E2 When:T7
+E5	meta_prefer:T8 Winner:E4 Loser:E3 When:T7

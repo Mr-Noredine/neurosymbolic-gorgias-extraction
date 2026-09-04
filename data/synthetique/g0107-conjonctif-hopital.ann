@@ -1,0 +1,5 @@
+T1	Context 6 52	deux infirmières manquent à l'effectif de nuit
+T2	Context 60 100	le service dépasse sa capacité d'accueil
+T3	Option 102 129	le plan blanc est déclenché
+E1	rule:T3 Condition:T1 Condition:T2 Effect:T3
+A1	Modality T3 obligatory

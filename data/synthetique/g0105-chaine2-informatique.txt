@@ -1,0 +1,1 @@
+Lorsque le certificat expire dans quarante-huit heures, la mise en production est bloquée. Par conséquent, l'astreinte peut être sollicitée.

@@ -1,0 +1,12 @@
+T1	Option 0 26	nous retenons le taux fixe
+T2	Context 32 72	l'apport reste inférieur à dix pour cent
+T3	Context 82 131	les revenus varient fortement d'un mois à l'autre
+T4	Option 133 163	nous retenons le taux variable
+T5	Context 165 187	Pour un primo-accédant
+T6	Marker 202 213	prévaut sur
+T7	Context 232 250	En marché baissier
+T8	Marker 269 280	passe avant
+E1	rule:T1 Condition:T2 Effect:T1
+E2	rule:T4 Condition:T3 Effect:T4
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5
+E4	prefer:T8 Winner:E2 Loser:E1 When:T7

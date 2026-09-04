@@ -1,0 +1,9 @@
+T1	Context 8 42	la déclaration parvient hors délai
+T2	Option 44 77	nous indemnisons en valeur à neuf
+T3	Option 79 113	nous indemnisons en valeur d'usage
+T4	Context 123 167	le sinistre relève d'un événement climatique
+T5	Context 169 193	En catastrophe naturelle
+T6	Marker 212 223	passe avant
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T3 Condition:T4 Effect:T3
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5

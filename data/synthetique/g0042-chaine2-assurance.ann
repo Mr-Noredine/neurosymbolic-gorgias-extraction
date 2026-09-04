@@ -1,0 +1,6 @@
+T1	Option 0 27	l'indemnisation est réduite
+T2	Context 33 67	la déclaration parvient hors délai
+T3	Option 85 115	la franchise légale s'applique
+E1	rule:T1 Condition:T2 Effect:T1
+E2	rule:T3 Condition:T1 Effect:T3
+A1	Modality T1 obligatory

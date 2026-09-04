@@ -1,0 +1,1 @@
+le délestage est déclenché, puisque la charge dépasse la capacité du transformateur. Aussi l'exploitation peut se poursuivre en mode dégradé. Dès lors, la maintenance est avancée. Par ailleurs, le poste a été construit en mille neuf cent quatre-vingts.

@@ -1,0 +1,1 @@
+le camion arrive après la fermeture du quai : nous expédions par la route. Lorsque le bon de livraison ne mentionne aucun numéro de lot, nous expédions par le rail. Pour une commande urgente, la route l'emporte sur le rail. En période de gel, le rail passe avant la route.

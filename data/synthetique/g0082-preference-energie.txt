@@ -1,0 +1,1 @@
+Lorsque la tension sort de la plage réglementaire, nous basculons sur le groupe électrogène. Lorsque la charge dépasse la capacité du transformateur, nous basculons sur le réseau voisin. En pointe de consommation, le groupe passe avant le réseau voisin. les pylônes longent la départementale.

@@ -1,0 +1,1 @@
+nous basculons sur le groupe électrogène, car un défaut d'isolement est détecté sur la ligne. la charge dépasse la capacité du transformateur : nous basculons sur le réseau voisin. Sur un site isolé, le groupe passe avant le réseau voisin.

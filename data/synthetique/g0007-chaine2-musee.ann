@@ -1,0 +1,6 @@
+T1	Context 6 51	l'hygrométrie de la salle sort des tolérances
+T2	Option 53 80	la restauration est engagée
+T3	Option 92 124	l'exposition peut être prolongée
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T3 Condition:T2 Effect:T3
+A1	Modality T3 permitted

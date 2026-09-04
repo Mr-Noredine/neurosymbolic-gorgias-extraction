@@ -1,0 +1,6 @@
+T1	Context 123 169	les sauvegardes n'ont pas tourné cette nuit-là
+T2	Option 171 201	la restauration est impossible
+T3	Option 203 236	L'équipe doit déclarer l'incident
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T3 Condition:T2 Effect:T3
+A1	Modality T3 obligatory

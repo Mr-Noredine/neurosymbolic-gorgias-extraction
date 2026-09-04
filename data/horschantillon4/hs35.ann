@@ -1,0 +1,7 @@
+T1	Context 13 119	les demandes sont manifestement infondées ou excessives, en raison, notamment, de leur caractère répétitif
+T2	Option 121 224	l'autorité de contrôle peut exiger le paiement de frais raisonnables basés sur les coûts administratifs
+T3	Option 228 264	refuser de donner suite à la demande
+T4	Option 266 375	Il incombe à l'autorité de contrôle de démontrer le caractère manifestement infondé ou excessif de la demande
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T3 Condition:T1 Effect:T3
+E3	rule:T4 Condition:T1 Effect:T4

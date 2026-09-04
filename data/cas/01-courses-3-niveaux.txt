@@ -1,0 +1,1 @@
+Pour les courses de la semaine, l'utilisateur peut acheter de l'agneau, du porc, du poulet ou du poisson. Comme le porc et le poulet sont les moins chers, il les préfère aux deux autres. En hiver, il préfère le porc au poulet. Mais si le poulet est produit localement, il préfère le poulet même en hiver.

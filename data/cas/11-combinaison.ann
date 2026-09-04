@@ -1,0 +1,8 @@
+T1	Context 6 21	le sol est gelé
+T2	Option 23 42	le sel est appliqué
+T3	Context 50 64	la pluie tombe
+T4	Option 66 87	le sable est appliqué
+T5	Marker 143 157	est préféré au
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T4 Condition:T3 Effect:T4
+E3	prefer:T5 Winner:E2 Loser:E1 When:T1

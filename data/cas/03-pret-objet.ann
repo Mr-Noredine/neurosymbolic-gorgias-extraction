@@ -1,0 +1,13 @@
+T1	Option 0 32	Un employé prête l'objet demandé
+T2	Context 35 53	qui le lui demande
+T3	Context 57 80	il en a lui-même besoin
+T4	Option 82 93	il le garde
+T5	Context 95 141	Une demande venant d'un supérieur hiérarchique
+T6	Marker 142 155	l'emporte sur
+T7	Context 188 209	son besoin est urgent
+T8	Marker 221 230	prime sur
+E1	rule:T1 Condition:T2 Effect:T1
+E2	rule:T4 Condition:T3 Effect:T4
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5
+E4	prefer:T8 Winner:E2 Loser:E1 When:T7
+E5	meta_prefer:T8 Winner:E4 Loser:E3 When:T7

@@ -1,0 +1,9 @@
+T1	Context 5 51	un patient fébrile depuis moins de trois jours
+T2	Context 55 76	sans signe de gravité
+T3	Option 78 120	l'abstention thérapeutique est recommandée
+T4	Context 122 161	En présence d'une détresse respiratoire
+T5	Option 163 210	l'hospitalisation doit être demandée sans délai
+E1	rule:T3 Condition:T1 Condition:T2 Effect:T3
+E2	rule:T5 Condition:T4 Effect:T5
+A1	Modality T3 recommended
+A2	Modality T5 obligatory

@@ -1,0 +1,13 @@
+T1	Option 0 27	nous expédions par la route
+T2	Context 37 89	le bon de livraison ne mentionne aucun numéro de lot
+T3	Context 97 140	le camion arrive après la fermeture du quai
+T4	Option 142 168	nous expédions par le rail
+T5	Context 170 195	Pour une commande urgente
+T6	Marker 206 219	l'emporte sur
+T7	Context 234 251	en période de gel
+T8	Marker 261 272	prévaut sur
+E1	rule:T1 Condition:T2 Effect:T1
+E2	rule:T4 Condition:T3 Effect:T4
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5
+E4	prefer:T8 Winner:E2 Loser:E1 When:T7
+E5	meta_prefer:T8 Winner:E4 Loser:E3 When:T7

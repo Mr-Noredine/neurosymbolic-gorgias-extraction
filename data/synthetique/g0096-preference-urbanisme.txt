@@ -1,0 +1,1 @@
+Quand le terrain se situe en zone inondable, nous retenons la rénovation. nous retenons la démolition, puisque le plan local interdit toute surélévation. En secteur sauvegardé, la rénovation prime sur la démolition.

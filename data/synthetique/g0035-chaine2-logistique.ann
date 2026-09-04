@@ -1,0 +1,7 @@
+T1	Context 0 43	le camion arrive après la fermeture du quai
+T2	Option 46 84	la marchandise est mise en quarantaine
+T3	Option 102 131	une réserve est portée au bon
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T3 Condition:T2 Effect:T3
+A1	Modality T2 obligatory
+A2	Modality T3 recommended

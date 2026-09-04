@@ -1,0 +1,12 @@
+T1	Context 0 38	le débit de la rivière chute de moitié
+T2	Option 41 75	nous installons le goutte-à-goutte
+T3	Context 83 134	les précipitations restent inférieures à la moyenne
+T4	Option 136 160	nous gardons l'aspersion
+T5	Context 162 186	En période de sécheresse
+T6	Marker 207 220	l'emporte sur
+T7	Context 234 260	Sur les parcelles en pente
+T8	Marker 274 283	prime sur
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T4 Condition:T3 Effect:T4
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5
+E4	prefer:T8 Winner:E2 Loser:E1 When:T7

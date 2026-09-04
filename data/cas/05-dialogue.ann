@@ -1,0 +1,12 @@
+T1	Context 6 34	Le prototype tient la charge
+T2	Option 36 64	nous pouvons livrer vendredi
+T3	Context 73 112	Deux tests d'intégration restent rouges
+T4	Option 114 144	il faut repousser la livraison
+T5	Context 152 211	Ces tests portent sur un module que le client n'utilise pas
+T6	Context 220 235	En phase pilote
+T7	Marker 254 263	prime sur
+E1	rule:T2 Condition:T1 Condition:T5 Effect:T2
+E2	rule:T4 Condition:T3 Effect:T4
+E3	prefer:T7 Winner:E1 Loser:E2 When:T6
+A1	Modality T2 permitted
+A2	Modality T4 obligatory

@@ -1,0 +1,1 @@
+Lorsque un défaut d'isolement est détecté sur la ligne, nous basculons sur le groupe électrogène. nous basculons sur le réseau voisin, car la tension sort de la plage réglementaire. En pointe de consommation, le groupe l'emporte sur le réseau voisin. Sur un site isolé, le réseau voisin prévaut sur le groupe. Par ailleurs, la clôture a été remplacée cet hiver.

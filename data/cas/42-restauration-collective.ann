@@ -1,0 +1,10 @@
+T1	Context 6 37	un convive déclare une allergie
+T2	Option 39 74	un menu de substitution est préparé
+T3	Context 82 114	le fournisseur change de recette
+T4	Option 116 151	la fiche allergènes est mise à jour
+T5	Context 159 190	la fiche n'a pas été actualisée
+T6	Option 192 236	le plat concerné doit être retiré du service
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T4 Condition:T3 Effect:T4
+E3	rule:T6 Condition:T5 Effect:T6
+A1	Modality T6 obligatory

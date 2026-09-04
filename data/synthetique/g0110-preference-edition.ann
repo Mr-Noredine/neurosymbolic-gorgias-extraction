@@ -1,0 +1,9 @@
+T1	Context 0 45	les droits iconographiques ne sont pas réglés
+T2	Option 48 76	nous sortons en grand format
+T3	Context 78 109	la traduction n'a pas été relue
+T4	Option 112 133	nous sortons en poche
+T5	Context 135 156	En rentrée littéraire
+T6	Marker 174 185	prévaut sur
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T4 Condition:T3 Effect:T4
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5

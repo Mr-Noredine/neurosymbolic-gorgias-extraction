@@ -1,0 +1,1 @@
+Comme l'effectif est faible et que la variance observée est élevée, la puissance statistique est insuffisante. Puisque la puissance est insuffisante, la conclusion doit être présentée comme exploratoire.

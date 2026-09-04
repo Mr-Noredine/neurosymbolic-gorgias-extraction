@@ -1,0 +1,1 @@
+nous hébergeons sur serveur dédié, puisque le certificat expire dans quarante-huit heures. Lorsque le disque de destination est saturé, nous hébergeons dans le cloud. Pour un budget contraint, le serveur dédié prime sur le cloud. En forte saisonnalité, le cloud prévaut sur le serveur dédié. En revanche, le badge d'accès a été renouvelé.

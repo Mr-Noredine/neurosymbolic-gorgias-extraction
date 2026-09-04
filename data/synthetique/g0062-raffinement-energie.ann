@@ -1,0 +1,13 @@
+T1	Context 8 49	la tension sort de la plage réglementaire
+T2	Option 51 91	nous basculons sur le groupe électrogène
+T3	Context 101 148	la charge dépasse la capacité du transformateur
+T4	Option 150 185	nous basculons sur le réseau voisin
+T5	Context 187 212	En pointe de consommation
+T6	Marker 224 235	passe avant
+T7	Context 259 276	sur un site isolé
+T8	Marker 295 306	prévaut sur
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T4 Condition:T3 Effect:T4
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5
+E4	prefer:T8 Winner:E2 Loser:E1 When:T7
+E5	meta_prefer:T8 Winner:E4 Loser:E3 When:T7

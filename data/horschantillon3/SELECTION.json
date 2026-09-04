@@ -1,0 +1,22 @@
+{
+  "source": "https://eur-lex.europa.eu/legal-content/FR/TXT/HTML/?uri=CELEX:32016R0679",
+  "sha256_page": "c6d9baf431c7a31437b010570b336a355c2fdd0d7a08990df75ec33b2acaab28",
+  "regle": "paragraphe numéroté d'article, 160-420 car., marqueur conditionnel, phrase autonome ; pris dans l'ordre du document",
+  "rang_debut": 21,
+  "nombre": 10,
+  "reproduction": "python3 data/horschantillon/selectionner.py --debut 21 --nombre 10 --sortie data/horschantillon3",
+  "annotation": "data/horschantillon3/annoter.py — annotateur unique",
+  "pourquoi_un_troisieme_lot": "le lot 11-20 a servi à dériver le mécanisme « subordonnant rendu à sa proposition » : il ne mesure plus la généralisation",
+  "documents": [
+    "6.   Lorsque le projet de code, la modification ou la prorogation est approuvé conformément au paragraphe 5, et lorsque le code de conduite concerné ne porte pas sur des activités de traitement menées dans plusieurs États membres, l'autorité de contrôle enregistre et publie le code de conduite.",
+    "8.   Lorsque l'avis visé au paragraphe 7 confirme que le projet de code, la modification ou la prorogation respecte le présent règlement ou, dans la situation visée au paragraphe 3, offre des garanties appropriées, le comité soumet son avis à la Commission.",
+    "5.   L'autorité de contrôle compétente révoque l'agrément d'un organisme visé au paragraphe 1 si les conditions d'agrément ne sont pas ou ne sont plus réunies ou si les mesures prises par l'organisme constituent une violation du présent règlement.",
+    "7.   Sans préjudice du chapitre VIII, l'autorité de contrôle compétente ou l'organisme national d'accréditation révoque l'agrément d'un organisme de certification en application du paragraphe 1 du présent article si les conditions d'agrément ne sont pas ou ne sont plus réunies ou si les mesures prises par l'organisme de certification constituent une violation du présent règlement.",
+    "1.   Un transfert de données à caractère personnel vers un pays tiers ou à une organisation internationale peut avoir lieu lorsque la Commission a constaté par voie de décision que le pays tiers, un territoire ou un ou plusieurs secteurs déterminés dans ce pays tiers, ou l'organisation internationale en question assure un niveau de protection adéquat. Un tel transfert ne nécessite pas d'autorisation spécifique.",
+    "1.   En l'absence de décision en vertu de l'article 45, paragraphe 3, le responsable du traitement ou le sous-traitant ne peut transférer des données à caractère personnel vers un pays tiers ou à une organisation internationale que s'il a prévu des garanties appropriées et à la condition que les personnes concernées disposent de droits opposables et de voies de droit effectives.",
+    "3.   Lorsqu'un État membre institue plusieurs autorités de contrôle, il désigne celle qui représente ces autorités au comité et définit le mécanisme permettant de s'assurer du respect, par les autres autorités, des règles relatives au mécanisme de contrôle de la cohérence visé à l'article 63.",
+    "4.   Chaque État membre veille à ce que chaque autorité de contrôle dispose des ressources humaines, techniques et financières ainsi que des locaux et de l'infrastructure nécessaires à l'exercice effectif de ses missions et de ses pouvoirs, y compris lorsque celle-ci doit agir dans le cadre de l'assistance mutuelle, de la coopération et de la participation au comité.",
+    "3.   Les fonctions d'un membre prennent fin à l'échéance de son mandat, en cas de démission ou de mise à la retraite d'office, conformément au droit de l'État membre concerné.",
+    "4.   Un membre ne peut être démis de ses fonctions que s'il a commis une faute grave ou s'il ne remplit plus les conditions nécessaires à l'exercice de ses fonctions."
+  ]
+}

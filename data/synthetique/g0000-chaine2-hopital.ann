@@ -1,0 +1,6 @@
+T1	Context 6 46	le service dépasse sa capacité d'accueil
+T2	Option 48 90	les admissions non urgentes sont reportées
+T3	Option 108 135	le plan blanc est déclenché
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T3 Condition:T2 Effect:T3
+A1	Modality T3 obligatory

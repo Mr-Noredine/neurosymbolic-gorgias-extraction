@@ -1,0 +1,1 @@
+nous hébergeons sur serveur dédié, car le certificat expire dans quarante-huit heures. nous hébergeons dans le cloud, puisque la sauvegarde nocturne a échoué. Pour un budget contraint, le serveur dédié l'emporte sur le cloud. Cependant, le badge d'accès a été renouvelé.

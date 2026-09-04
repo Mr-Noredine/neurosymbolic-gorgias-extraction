@@ -1,0 +1,8 @@
+T1	Context 6 55	la température du camion est montée à huit degrés
+T2	Context 63 91	le trajet a duré cinq heures
+T3	Option 93 137	la rupture de la chaîne du froid est établie
+T4	Context 147 169	la rupture est établie
+T5	Option 171 195	le lot doit être détruit
+E1	rule:T3 Condition:T1 Condition:T2 Effect:T3
+E2	rule:T5 Condition:T4 Effect:T5
+A1	Modality T5 obligatory

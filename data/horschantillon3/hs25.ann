@@ -1,0 +1,5 @@
+T1	Option 5 122	Un transfert de données à caractère personnel vers un pays tiers ou à une organisation internationale peut avoir lieu
+T2	Context 131 352	la Commission a constaté par voie de décision que le pays tiers, un territoire ou un ou plusieurs secteurs déterminés dans ce pays tiers, ou l'organisation internationale en question assure un niveau de protection adéquat
+T3	Option 354 413	Un tel transfert ne nécessite pas d'autorisation spécifique
+E1	rule:T1 Condition:T2 Effect:T1
+E2	rule:T3 Condition:T2 Effect:T3

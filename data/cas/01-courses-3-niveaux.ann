@@ -1,0 +1,20 @@
+T1	Context 5 30	les courses de la semaine
+T2	Option 51 70	acheter de l'agneau
+T3	Option 72 79	du porc
+T4	Option 81 90	du poulet
+T5	Option 94 104	du poisson
+T6	Context 112 153	le porc et le poulet sont les moins chers
+T7	Marker 162 185	préfère aux deux autres
+T8	Context 187 195	En hiver
+T9	Marker 200 225	préfère le porc au poulet
+T10	Context 235 267	le poulet est produit localement
+T11	Marker 272 294	préfère le poulet même
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T3 Condition:T1 Condition:T6 Effect:T3
+E3	rule:T4 Condition:T1 Condition:T6 Effect:T4
+E4	rule:T5 Condition:T1 Effect:T5
+E5	prefer:T7 Winner:E2 Loser:E1 When:T6
+E6	prefer:T7 Winner:E3 Loser:E4 When:T6
+E7	prefer:T9 Winner:E2 Loser:E3 When:T8
+E8	prefer:T11 Winner:E3 Loser:E2 When:T10
+E9	meta_prefer:T11 Winner:E8 Loser:E7 When:T10

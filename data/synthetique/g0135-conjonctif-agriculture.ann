@@ -1,0 +1,5 @@
+T1	Context 8 32	le sol reste gorgé d'eau
+T2	Context 40 83	un foyer de mildiou est signalé à proximité
+T3	Option 85 115	la parcelle doit être déclarée
+E1	rule:T3 Condition:T1 Condition:T2 Effect:T3
+A1	Modality T3 obligatory

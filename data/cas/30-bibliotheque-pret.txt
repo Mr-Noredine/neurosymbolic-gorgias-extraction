@@ -1,0 +1,1 @@
+Quand un ouvrage est demandé par un chercheur, le prêt longue durée est accordé. Quand un ouvrage figure au programme d'un cours, la consultation sur place est imposée. En période d'examens, la consultation sur place prime sur le prêt longue durée.

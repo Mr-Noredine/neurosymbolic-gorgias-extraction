@@ -1,0 +1,1 @@
+l'astreinte peut être sollicitée, puisque le disque de destination est saturé. Par conséquent, une restauration est lancée.

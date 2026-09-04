@@ -1,0 +1,9 @@
+T1	Option 0 21	nous prenons le train
+T2	Context 27 52	la chaussée est verglacée
+T3	Context 62 103	le trafic double par rapport à la moyenne
+T4	Option 105 128	nous prenons la voiture
+T5	Context 130 150	Aux heures de pointe
+T6	Marker 161 172	passe avant
+E1	rule:T1 Condition:T2 Effect:T1
+E2	rule:T4 Condition:T3 Effect:T4
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5

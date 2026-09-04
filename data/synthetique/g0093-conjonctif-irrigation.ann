@@ -1,0 +1,5 @@
+T1	Context 6 57	les précipitations restent inférieures à la moyenne
+T2	Context 65 103	le débit de la rivière chute de moitié
+T3	Option 105 137	le pompage agricole est suspendu
+E1	rule:T3 Condition:T1 Condition:T2 Effect:T3
+A1	Modality T3 obligatory

@@ -1,0 +1,4 @@
+T1	Context 147 194	les poussières dépassent le seuil réglementaire
+T2	Option 196 222	le port du masque s'impose
+E1	rule:T2 Condition:T1 Effect:T2
+A1	Modality T2 obligatory

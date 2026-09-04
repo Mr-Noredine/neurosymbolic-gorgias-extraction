@@ -1,0 +1,3 @@
+T1	Context 31 101	il n'est pas possible de fournir toutes les informations en même temps
+T2	Option 103 190	les informations peuvent être communiquées de manière échelonnée sans autre retard indu
+E1	rule:T2 Condition:T1 Effect:T2

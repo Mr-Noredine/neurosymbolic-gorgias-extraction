@@ -1,0 +1,7 @@
+T1	Context 6 50	le sinistre relève d'un événement climatique
+T2	Context 58 106	la commune est reconnue en catastrophe naturelle
+T3	Option 108 138	la franchise légale s'applique
+T4	Context 148 180	le contrat prévoit une extension
+T5	Option 182 214	le relogement est pris en charge
+E1	rule:T3 Condition:T1 Condition:T2 Effect:T3
+E2	rule:T5 Condition:T4 Effect:T5

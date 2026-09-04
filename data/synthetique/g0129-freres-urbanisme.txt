@@ -1,0 +1,1 @@
+le terrain se situe en zone inondable : nous retenons la rénovation. Quand la parcelle jouxte un monument classé, nous retenons la démolition. En secteur sauvegardé, la rénovation passe avant la démolition. Pour un bâtiment vacant, la démolition l'emporte sur la rénovation. Ensuite, le marché s'y tient le mercredi. Cependant, la place a été pavée il y a dix ans.

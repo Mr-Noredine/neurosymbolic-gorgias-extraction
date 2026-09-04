@@ -1,0 +1,5 @@
+T1	Context 8 39	la sauvegarde nocturne a échoué
+T2	Context 47 93	le certificat expire dans quarante-huit heures
+T3	Option 95 128	la mise en production est bloquée
+E1	rule:T3 Condition:T1 Condition:T2 Effect:T3
+A1	Modality T3 obligatory

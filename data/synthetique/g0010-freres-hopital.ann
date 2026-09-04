@@ -1,0 +1,12 @@
+T1	Option 0 32	nous ouvrons le secteur de repli
+T2	Context 42 88	deux infirmières manquent à l'effectif de nuit
+T3	Context 90 127	le délai d'attente atteint six heures
+T4	Option 130 168	nous transférons vers l'hôpital voisin
+T5	Context 170 191	En période épidémique
+T6	Marker 213 224	prévaut sur
+T7	Context 239 246	La nuit
+T8	Marker 261 270	prime sur
+E1	rule:T1 Condition:T2 Effect:T1
+E2	rule:T4 Condition:T3 Effect:T4
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5
+E4	prefer:T8 Winner:E2 Loser:E1 When:T7

@@ -1,0 +1,9 @@
+T1	Option 0 27	nous expédions par la route
+T2	Context 37 89	le bon de livraison ne mentionne aucun numéro de lot
+T3	Context 97 135	la palette présente un emballage percé
+T4	Option 137 163	nous expédions par le rail
+T5	Context 165 182	En période de gel
+T6	Marker 193 202	prime sur
+E1	rule:T1 Condition:T2 Effect:T1
+E2	rule:T4 Condition:T3 Effect:T4
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5

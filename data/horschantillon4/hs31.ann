@@ -1,0 +1,5 @@
+T1	Context 13 158	le traitement est effectué par des autorités publiques ou des organismes privés agissant sur la base de l'article 6, paragraphe 1, point c) ou e)
+T2	Option 160 223	l'autorité de contrôle de l'État membre concerné est compétente
+T3	Option 238 271	l'article 56 n'est pas applicable
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T3 Condition:T1 Effect:T3

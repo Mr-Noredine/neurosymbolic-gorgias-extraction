@@ -1,0 +1,1 @@
+Quand un défaut d'isolement est détecté sur la ligne, nous basculons sur le groupe électrogène. nous basculons sur le réseau voisin, puisque la charge dépasse la capacité du transformateur. En pointe de consommation, le groupe passe avant le réseau voisin.

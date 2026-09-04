@@ -1,0 +1,1 @@
+Quand le client est fidèle depuis cinq ans, la remise de fidélité s'applique. Quand la commande dépasse le seuil de gros, la remise de volume s'applique. Pour un renouvellement annuel, la remise de fidélité l'emporte sur la remise de volume.

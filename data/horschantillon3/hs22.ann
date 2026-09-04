@@ -1,0 +1,3 @@
+T1	Context 13 213	l'avis visé au paragraphe 7 confirme que le projet de code, la modification ou la prorogation respecte le présent règlement ou, dans la situation visée au paragraphe 3, offre des garanties appropriées
+T2	Option 215 256	le comité soumet son avis à la Commission
+E1	rule:T2 Condition:T1 Effect:T2

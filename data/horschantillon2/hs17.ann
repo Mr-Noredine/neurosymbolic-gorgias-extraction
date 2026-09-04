@@ -1,0 +1,4 @@
+T1	Context 12 81	il effectue une analyse d'impact relative à la protection des données
+T2	Option 83 166	le responsable du traitement demande conseil au délégué à la protection des données
+T3	Context 171 199	un tel délégué a été désigné
+E1	rule:T2 Condition:T1 Condition:T3 Effect:T2

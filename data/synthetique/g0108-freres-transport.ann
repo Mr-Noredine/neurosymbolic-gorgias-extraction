@@ -1,0 +1,12 @@
+T1	Context 6 47	le trafic double par rapport à la moyenne
+T2	Option 49 70	nous prenons le train
+T3	Context 80 117	un ouvrage d'art présente une fissure
+T4	Option 119 142	nous prenons la voiture
+T5	Context 144 152	En hiver
+T6	Marker 163 174	prévaut sur
+T7	Context 187 207	Aux heures de pointe
+T8	Marker 220 233	l'emporte sur
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T4 Condition:T3 Effect:T4
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5
+E4	prefer:T8 Winner:E2 Loser:E1 When:T7

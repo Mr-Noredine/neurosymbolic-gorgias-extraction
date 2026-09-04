@@ -1,0 +1,7 @@
+T1	Context 6 51	les droits iconographiques ne sont pas réglés
+T2	Option 53 88	une relecture externe est commandée
+T3	Option 106 132	le tirage doit être réduit
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T3 Condition:T2 Effect:T3
+A1	Modality T2 recommended
+A2	Modality T3 obligatory

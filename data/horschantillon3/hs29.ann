@@ -1,0 +1,5 @@
+T1	Option 5 43	Les fonctions d'un membre prennent fin
+T2	Context 44 70	à l'échéance de son mandat
+T3	Context 72 125	en cas de démission ou de mise à la retraite d'office
+E1	rule:T1 Condition:T2 Effect:T1
+E2	rule:T1 Condition:T3 Effect:T1

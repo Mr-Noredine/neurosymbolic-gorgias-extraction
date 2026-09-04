@@ -1,0 +1,1 @@
+Quand une pièce est usée, elle est remplacée. Quand le stock est vide, elle est réparée sur place. En cas d'arrêt de ligne, le remplacement l'emporte sur la réparation.

@@ -1,0 +1,9 @@
+T1	Context 6 42	le client est fidèle depuis cinq ans
+T2	Option 44 76	la remise de fidélité s'applique
+T3	Context 84 120	la commande dépasse le seuil de gros
+T4	Option 122 152	la remise de volume s'applique
+T5	Context 154 183	Pour un renouvellement annuel
+T6	Marker 207 220	l'emporte sur
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T4 Condition:T3 Effect:T4
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5

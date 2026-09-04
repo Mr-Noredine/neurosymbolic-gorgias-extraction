@@ -1,0 +1,9 @@
+T1	Context 0 37	la parcelle jouxte un monument classé
+T2	Option 40 67	nous retenons la rénovation
+T3	Context 69 110	le plan local interdit toute surélévation
+T4	Option 113 140	nous retenons la démolition
+T5	Context 142 165	Pour un bâtiment vacant
+T6	Marker 181 192	prévaut sur
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T4 Condition:T3 Effect:T4
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5

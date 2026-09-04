@@ -1,0 +1,3 @@
+T1	Context 13 72	cela est proportionné au regard des activités de traitement
+T2	Option 74 233	les mesures visées au paragraphe 1 comprennent la mise en œuvre de politiques appropriées en matière de protection des données par le responsable du traitement
+E1	rule:T2 Condition:T1 Effect:T2

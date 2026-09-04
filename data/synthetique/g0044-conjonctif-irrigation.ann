@@ -1,0 +1,4 @@
+T1	Context 6 57	les précipitations restent inférieures à la moyenne
+T2	Context 65 104	la nappe descend sous le seuil d'alerte
+T3	Option 106 134	le tour d'eau est réorganisé
+E1	rule:T3 Condition:T1 Condition:T2 Effect:T3

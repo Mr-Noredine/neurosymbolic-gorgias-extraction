@@ -1,0 +1,9 @@
+T1	Option 0 33	nous hébergeons sur serveur dédié
+T2	Context 39 85	le certificat expire dans quarante-huit heures
+T3	Option 87 116	nous hébergeons dans le cloud
+T4	Context 126 157	la sauvegarde nocturne a échoué
+T5	Context 159 183	Pour un budget contraint
+T6	Marker 202 215	l'emporte sur
+E1	rule:T1 Condition:T2 Effect:T1
+E2	rule:T3 Condition:T4 Effect:T3
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5

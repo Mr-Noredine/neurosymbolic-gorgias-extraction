@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "neurosymbolic-gorgias-extraction"
+version = "0.2.0"
+description = "Extraction neuro-symbolique de structures d'argumentation LPP/GORGIAS depuis du texte, en local sur CPU"
+requires-python = ">=3.10"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{name = "Noureddine Mohammedi", email = "mohammedinoredine@gmail.com"}]
+keywords = [
+    "argumentation-mining", "gorgias", "answer-set-programming",
+    "neurosymbolic", "brat", "spacy", "ollama", "french-nlp",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Natural Language :: French",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Text Processing :: Linguistic",
+]
+dependencies = [
+    "langchain-core==1.5.0",
+    "langchain-ollama==1.1.0",
+    "spacy==3.8.14",
+    "clingo==5.8.0",
+]
+
+[project.optional-dependencies]
+server = ["fastapi==0.116.1", "uvicorn==0.35.0"]
+
+[project.urls]
+Homepage = "https://github.com/Mr-Noredine/neurosymbolic-gorgias-extraction"
+Repository = "https://github.com/Mr-Noredine/neurosymbolic-gorgias-extraction"
+Issues = "https://github.com/Mr-Noredine/neurosymbolic-gorgias-extraction/issues"
+
+[project.scripts]
+gorgias = "gorgias.app:main"
+gorgias-batch = "gorgias.batch:main"
+gorgias-api = "gorgias.service:main"
+
+# Disposition `src/` : le paquet n'est importable qu'une fois installé, ce qui
+# évite qu'un `import gorgias` réussisse par accident depuis la racine et
+# masque une erreur de packaging.
+[tool.setuptools.packages.find]
+where = ["src"]

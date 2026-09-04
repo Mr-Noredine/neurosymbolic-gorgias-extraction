@@ -1,0 +1,9 @@
+T1	Context 134 152	le délai est court
+T2	Option 154 184	le transport aérien est retenu
+T3	Context 192 215	le volume est important
+T4	Option 217 249	le transport maritime est retenu
+T5	Context 251 276	Pour une commande urgente
+T6	Marker 287 296	prime sur
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T4 Condition:T3 Effect:T4
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5

@@ -1,0 +1,9 @@
+T1	Context 0 46	deux infirmières manquent à l'effectif de nuit
+T2	Option 49 76	le plan blanc est déclenché
+T3	Option 94 136	les admissions non urgentes sont reportées
+T4	Option 154 181	un renfort peut être appelé
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T3 Condition:T2 Effect:T3
+E3	rule:T4 Condition:T3 Effect:T4
+A1	Modality T2 obligatory
+A2	Modality T4 permitted

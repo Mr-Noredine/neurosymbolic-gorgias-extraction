@@ -1,0 +1,1 @@
+Lorsque la tension sort de la plage réglementaire, la maintenance est avancée. Il s'ensuit que le délestage est déclenché. Il s'ensuit que l'exploitation peut se poursuivre en mode dégradé.

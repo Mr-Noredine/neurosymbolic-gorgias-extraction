@@ -1,0 +1,10 @@
+T1	Context 8 42	La copie montre une vraie maîtrise
+T2	Option 44 66	elle mérite la mention
+T3	Context 75 102	Le hors-sujet est manifeste
+T4	Option 104 129	la note doit rester basse
+T5	Context 205 214	Le barème
+T6	Option 215 253	impose de sanctionner l'écart au sujet
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T4 Condition:T3 Effect:T4
+E3	rule:T6 Condition:T5 Effect:T6
+A1	Modality T4 obligatory

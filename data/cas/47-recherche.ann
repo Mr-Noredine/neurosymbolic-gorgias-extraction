@@ -1,0 +1,8 @@
+T1	Context 6 27	l'effectif est faible
+T2	Context 35 66	la variance observée est élevée
+T3	Option 68 109	la puissance statistique est insuffisante
+T4	Context 119 148	la puissance est insuffisante
+T5	Option 150 202	la conclusion doit être présentée comme exploratoire
+E1	rule:T3 Condition:T1 Condition:T2 Effect:T3
+E2	rule:T5 Condition:T4 Effect:T5
+A1	Modality T5 obligatory

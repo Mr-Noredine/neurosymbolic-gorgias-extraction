@@ -1,0 +1,9 @@
+T1	Context 6 59	la levée est irrégulière sur la moitié de la parcelle
+T2	Option 61 86	nous pratiquons le labour
+T3	Option 88 119	nous pratiquons le semis direct
+T4	Context 129 172	un foyer de mildiou est signalé à proximité
+T5	Context 174 199	Après un épisode pluvieux
+T6	Marker 211 220	prime sur
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T3 Condition:T4 Effect:T3
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5

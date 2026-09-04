@@ -1,0 +1,1 @@
+Quand la rue est passante, l'éclairage renforcé est retenu. Quand la zone est résidentielle, l'éclairage tamisé est retenu. En centre-ville, l'éclairage renforcé prime sur l'éclairage tamisé. En périphérie, l'éclairage tamisé l'emporte sur l'éclairage renforcé.

@@ -1,0 +1,7 @@
+T1	Context 0 52	La sauvegarde nocturne a échoué trois nuits de suite
+T2	Context 54 89	Le disque de destination est saturé
+T3	Option 91 138	La restauration ne peut donc plus être garantie
+T4	Option 140 188	L'équipe doit déclencher la procédure d'incident
+E1	rule:T3 Condition:T1 Condition:T2 Effect:T3
+E2	rule:T4 Condition:T3 Effect:T4
+A1	Modality T4 obligatory

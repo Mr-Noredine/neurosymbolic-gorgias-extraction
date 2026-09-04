@@ -1,0 +1,1 @@
+Comme le pare-feu laisse passer le port de gestion et que les mots de passe par défaut subsistent, l'exposition est jugée critique. Puisque l'exposition est critique, la mise en production est bloquée.

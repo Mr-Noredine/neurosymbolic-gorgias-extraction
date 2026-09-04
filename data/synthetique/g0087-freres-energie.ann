@@ -1,0 +1,12 @@
+T1	Context 8 54	un défaut d'isolement est détecté sur la ligne
+T2	Option 56 96	nous basculons sur le groupe électrogène
+T3	Option 98 133	nous basculons sur le réseau voisin
+T4	Context 139 180	la tension sort de la plage réglementaire
+T5	Context 182 207	En pointe de consommation
+T6	Marker 219 232	l'emporte sur
+T7	Context 251 268	Sur un site isolé
+T8	Marker 287 298	prévaut sur
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T3 Condition:T4 Effect:T3
+E3	prefer:T6 Winner:E1 Loser:E2 When:T5
+E4	prefer:T8 Winner:E2 Loser:E1 When:T7

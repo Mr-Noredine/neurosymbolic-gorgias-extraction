@@ -1,0 +1,5 @@
+T1	Option 37 182	chaque autorité de contrôle est compétente pour traiter une réclamation introduite auprès d'elle ou une éventuelle violation du présent règlement
+T2	Context 187 269	son objet concerne uniquement un établissement dans l'État membre dont elle relève
+T3	Context 273 350	affecte sensiblement des personnes concernées dans cet État membre uniquement
+E1	rule:T1 Condition:T2 Effect:T1
+E2	rule:T1 Condition:T3 Effect:T1

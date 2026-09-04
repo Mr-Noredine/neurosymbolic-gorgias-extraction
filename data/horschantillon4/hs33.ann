@@ -1,0 +1,8 @@
+T1	Context 8 68	l'autorité de contrôle chef de file décide de traiter le cas
+T2	Option 70 115	la procédure prévue à l'article 60 s'applique
+T3	Option 117 230	L'autorité de contrôle qui a informé l'autorité de contrôle chef de file peut lui soumettre un projet de décision
+T4	Context 315 383	elle élabore le projet de décision visé à l'article 60, paragraphe 3
+T5	Option 232 307	L'autorité de contrôle chef de file tient le plus grand compte de ce projet
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T3 Condition:T1 Effect:T3
+E3	rule:T5 Condition:T1 Condition:T4 Effect:T5

@@ -1,0 +1,5 @@
+T1	Option 5 93	L'autorité de contrôle compétente révoque l'agrément d'un organisme visé au paragraphe 1
+T2	Context 97 158	les conditions d'agrément ne sont pas ou ne sont plus réunies
+T3	Context 165 246	les mesures prises par l'organisme constituent une violation du présent règlement
+E1	rule:T1 Condition:T2 Effect:T1
+E2	rule:T1 Condition:T3 Effect:T1

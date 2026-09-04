@@ -1,0 +1,1 @@
+Quand la charge est prévisible, le serveur dédié est retenu. Quand le trafic varie fortement, le cloud est retenu. Pour un budget contraint, le serveur dédié prime sur le cloud. Mais si la saisonnalité est forte, le cloud l'emporte sur le serveur dédié, même à budget contraint.

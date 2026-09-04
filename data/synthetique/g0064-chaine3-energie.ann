@@ -1,0 +1,9 @@
+T1	Option 0 49	l'exploitation peut se poursuivre en mode dégradé
+T2	Context 59 105	un défaut d'isolement est détecté sur la ligne
+T3	Option 123 149	le délestage est déclenché
+T4	Option 167 193	la maintenance est avancée
+E1	rule:T1 Condition:T2 Effect:T1
+E2	rule:T3 Condition:T1 Effect:T3
+E3	rule:T4 Condition:T3 Effect:T4
+A1	Modality T1 permitted
+A2	Modality T3 obligatory

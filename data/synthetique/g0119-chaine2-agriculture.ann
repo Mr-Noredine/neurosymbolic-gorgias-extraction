@@ -1,0 +1,7 @@
+T1	Context 6 59	la levée est irrégulière sur la moitié de la parcelle
+T2	Option 61 91	la parcelle doit être déclarée
+T3	Option 99 119	le semis est reporté
+E1	rule:T2 Condition:T1 Effect:T2
+E2	rule:T3 Condition:T2 Effect:T3
+A1	Modality T2 obligatory
+A2	Modality T3 recommended

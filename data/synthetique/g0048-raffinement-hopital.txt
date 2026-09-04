@@ -1,0 +1,1 @@
+nous ouvrons le secteur de repli, puisque le service dépasse sa capacité d'accueil. Lorsque le délai d'attente atteint six heures, nous transférons vers l'hôpital voisin. En période épidémique, le secteur de repli prévaut sur le transfert. Mais la nuit, le transfert passe avant le secteur de repli, même en période épidémique.

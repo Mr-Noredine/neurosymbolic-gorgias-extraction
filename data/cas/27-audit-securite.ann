@@ -1,0 +1,7 @@
+T1	Context 6 50	le pare-feu laisse passer le port de gestion
+T2	Context 58 97	les mots de passe par défaut subsistent
+T3	Option 99 130	l'exposition est jugée critique
+T4	Context 140 165	l'exposition est critique
+T5	Option 167 200	la mise en production est bloquée
+E1	rule:T3 Condition:T1 Condition:T2 Effect:T3
+E2	rule:T5 Condition:T4 Effect:T5
