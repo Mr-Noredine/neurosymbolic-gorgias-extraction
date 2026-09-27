@@ -131,8 +131,8 @@ sur 5 récits sur 32 qui n'en contiennent aucune.
 > inutilisable — comptez un modèle de 4 milliards de paramètres à la place
 > (`ollama pull qwen3.5:4b`, 3,4 Go), et passez-le par `--modele`. Le
 > plancher symbolique est identique, puisqu'il ne dépend d'aucun modèle ; ce
-> qui change est ce que le modèle ajoute par-dessus, et cela n'a pas été
-> mesuré sur les deux tailles.
+> que le modèle 4B ajoute par-dessus est mesuré dans
+> [Résultats](#le-pipeline-complet).
 >
 > Sur un modèle 4B, réglez aussi `GORGIAS_NUM_THREAD` au nombre de cœurs
 > **physiques** : mesuré sur six cœurs / douze fils, 6 fils rendent 8,1
@@ -491,13 +491,41 @@ rappel, c'était une branche morte.
 
 ### Le pipeline complet
 
-`qwen3:8b`, sur CPU, mesures contrôlées : même machine, même modèle, seul le
-code varie entre deux points de comparaison.
+#### Avec un modèle 4B (`qwen3.5:4b`)
 
-> Ces chiffres sont **antérieurs** aux mécanismes du tableau ci-dessus et
+Mesure contrôlée sur `data/cas` et les 32 récits négatifs : même machine, même
+modèle, même nombre de fils (`GORGIAS_NUM_THREAD=6`), seul le code varie. Le
+départ est le premier commit du dépôt (`3617f4a`), l'arrivée intègre les
+mécanismes du plancher symbolique ci-dessus. Script : `bench/runs/lancer.sh`.
+
+| | départ | **aujourd'hui** |
+|---|---:|---:|
+| entités — précision / rappel | 98,1 % / 82,3 % | 98,5 % / 81,4 % |
+| dont marqueurs — rappel | 66,7 % | 66,7 % |
+| règles — précision / rappel | 96,9 % / 78,5 % | **97,9 %** / 78,5 % |
+| préférences — précision / rappel | 84,6 % / 55,0 % | **96,2 % / 62,5 %** |
+| **méta-préférences justes** | **0 / 6** | **5 / 6** (précision 100 %) |
+| priorités — précision / rappel | 81,5 % / 47,8 % | **96,8 % / 65,2 %** |
+| récits pollués | 1 / 32 | 1 / 32 |
+| appels au modèle (48 textes) | 108 | **97** |
+| durée CPU (48 textes) | 2 577 s | 2 554 s |
+
+Le gain se concentre là où le plancher symbolique l'annonçait : les priorités.
+Sur les entités, le léger recul du rappel (−0,9 point, 3 entités) est dans la
+variance d'une inférence non déterministe. Le récit pollué (`n27-sport`, une
+arête inventée) l'est **des deux côtés** : c'est un défaut du couple
+code-modèle 4B antérieur à ces changements, non une régression, et il est
+absent du plancher symbolique comme des mesures 8B.
+
+#### Avec un modèle 8B (`qwen3:8b`) — référence historique
+
+Mêmes conditions de mesure, sur une version antérieure du code.
+
+> Ces chiffres sont **antérieurs** aux mécanismes du plancher symbolique et
 > n'ont pas pu être refaits : `qwen3:8b` demande 6 Go de RAM, que la machine de
-> mesure n'a plus. Ils restent la référence 8B du dépôt, et le plancher
-> symbolique est la seule mesure comparable de bout en bout.
+> mesure n'a plus. Ils restent la référence 8B du dépôt, et ne se comparent
+> pas directement au tableau 4B : ni le modèle ni la version du code ne sont
+> les mêmes.
 
 | | départ | **aujourd'hui** |
 |---|---:|---:|
