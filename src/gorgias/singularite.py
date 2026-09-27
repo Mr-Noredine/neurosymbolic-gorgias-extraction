@@ -84,14 +84,61 @@ def _plier(mot: str) -> str:
     return "".join(c for c in decompose if not unicodedata.combining(c))
 
 
+def _racines(doc) -> tuple:
+    """TOUTES les racines de l'analyse, et pas seulement la première.
+
+    Une phrase bien formée n'en a qu'une. Mais le parseur produit parfois une
+    FORÊT sur un fragment qu'il analyse mal : « Le score final était de un
+    partout » rend deux racines, le nom `score` et l'auxiliaire `était`, sans
+    lien entre elles. Ne lire que la première donnait un nom sans trait de
+    temps, et le filtre passait à côté d'une phrase pourtant à l'imparfait.
+
+    La généralisation reste LOCALE : on regarde les prédicats de premier
+    niveau, jamais à l'intérieur d'une subordonnée — un passé enchâssé
+    (« la règle qui s'appliquait alors ») ne doit rien déclencher.
+    """
+    return tuple(token for token in doc if token.head == token)
+
+
 def _racine(doc):
-    racines = [token for token in doc if token.head == token]
+    racines = _racines(doc)
     return racines[0] if racines else None
 
 
+# Tous les temps du passé français, et non le seul passé composé. L'IMPARFAIT
+# est le temps du récit par excellence — « le score final était de un
+# partout », « la halle menaçait ruine » — et `Tense=Past` ne le couvre pas :
+# l'UD français l'étiquette `Tense=Imp`, et le plus-que-parfait `Tense=Pqp`.
+_TEMPS_DU_PASSE = frozenset({"Past", "Imp", "Pqp"})
+
+# Dépendances qui portent le temps à la place de la racine. Dans une phrase
+# COPULATIVE, spaCy fait du prédicat la racine et rattache la copule : « Le
+# score final était de un partout » a `score` pour racine, un NOM sans aucun
+# trait de temps, et `était` pour enfant `cop`. Chercher le temps sur la seule
+# racine rendait donc le filtre aveugle à toute phrase copulative — et l'unique
+# récit pollué du banc sous un modèle 4B l'était exactement par là.
+_PORTEURS_DE_TEMPS = ("cop", "aux:tense", "aux:pass")
+
+
 def _au_passe(token) -> bool:
-    """Le verbe porte-t-il la marque du passé ?"""
-    return token is not None and token.morph.get("Tense") == ["Past"]
+    """Le verbe porte-t-il la marque d'un temps du passé ?
+
+    Le temps est cherché sur la racine ET sur ce qui le porte à sa place —
+    copule ou auxiliaire. Les deux extensions par rapport au test d'origine
+    (`Tense == ["Past"]` sur la seule racine) sont des faits de grammaire, pas
+    des réglages : l'imparfait est un passé, et une copule porte le temps de
+    la phrase qu'elle articule.
+
+    Coût mesuré sur les 136 conditions de référence de `data/cas` : 108 sont
+    prouvées par la syntaxe, donc dispensées du filtre ; les 28 soumises sont
+    conservées, avant comme après. Zéro relation de référence perdue.
+    """
+    if token is None:
+        return False
+    formes = [token] + [enfant for enfant in token.children
+                        if enfant.dep_ in _PORTEURS_DE_TEMPS]
+    return any(set(forme.morph.get("Tense")) & _TEMPS_DU_PASSE
+               for forme in formes)
 
 
 def _passe_compose(token) -> bool:
@@ -133,9 +180,10 @@ def evenement_singulier(fragment_a: str, fragment_b: str,
     if nlp is None:
         return False
     doc_a, doc_b = nlp(fragment_a), nlp(fragment_b)
-    racine_a, racine_b = _racine(doc_a), _racine(doc_b)
-    deux_au_passe = _au_passe(racine_a) and _au_passe(racine_b)
-    un_temps_compose = _passe_compose(racine_a) or _passe_compose(racine_b)
+    racines_a, racines_b = _racines(doc_a), _racines(doc_b)
+    deux_au_passe = (any(_au_passe(r) for r in racines_a)
+                     and any(_au_passe(r) for r in racines_b))
+    un_temps_compose = any(_passe_compose(r) for r in racines_a + racines_b)
     if deux_au_passe and un_temps_compose:
         return True
     return _ancre_dans_le_temps(doc_a) or _ancre_dans_le_temps(doc_b)

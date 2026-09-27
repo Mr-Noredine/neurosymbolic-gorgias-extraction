@@ -198,6 +198,47 @@ def coupures_de_clauses(texte: str, debut: int, fin: int,
 
 
 @functools.lru_cache(maxsize=4096)
+@functools.lru_cache(maxsize=4096)
+def ouvre_une_clause(tete: str, modele: str = MODELE_DEFAUT) -> bool | None:
+    """Le fragment donné ouvre-t-il une CLAUSE autonome ?
+
+    Sert au seul cas d'une ponctuation forte suivie d'une minuscule. La règle
+    de surface — « un point suivi d'une minuscule ne termine pas une phrase »
+    — protège « etc. le reste » et « M. le maire », mais recolle deux phrases
+    entières dès qu'un texte n'ouvre pas ses phrases par une capitale. Mesuré
+    sur `data/synthetique` : 58 frontières manquées, d'où des segments portant
+    deux conclusions, des empans qui ne s'apparient plus à la référence, et
+    des règles fausses là où la prémisse s'accrochait au segment recollé.
+
+    Le test remplace la surface par la grammaire : on coupe si ce qui suit
+    porte un SUJET et un VERBE FINI propres, ce qui est vrai d'une phrase et
+    faux d'une apposition ou d'un groupe nominal. ``None`` signale l'absence
+    de spaCy : l'appelant garde alors la règle de surface, plus prudente.
+    """
+    nlp = _charger(modele)
+    if nlp is None:
+        return None
+    document = nlp(tete)
+    for token in document:
+        if token.dep_ not in {"nsubj", "nsubj:pass"}:
+            continue
+        tete_verbale = token.head
+        if tete_verbale.pos_ not in {"VERB", "AUX"}:
+            continue
+        # Au passif et aux temps composés, le sujet dépend du PARTICIPE, dont
+        # la forme n'est pas finie : « les couloirs ont été rénovés » a
+        # `rénovés` pour tête et `ont` pour auxiliaire. Chercher la finitude
+        # sur la seule tête refusait donc toute phrase au passif — soit, dans
+        # ce corpus, la moitié d'entre elles.
+        formes = [tete_verbale] + [
+            enfant for enfant in tete_verbale.children
+            if enfant.pos_ == "AUX"
+        ]
+        if any("VerbForm=Fin" in str(forme.morph) for forme in formes):
+            return True
+    return False
+
+
 def _traits_fragment(fragment: str, modele: str) -> tuple[tuple, ...] | None:
     """Analyse légère mémorisée des petits segments utilisés par les gardes.
 
@@ -281,11 +322,112 @@ _CONDITION_COORDONNEE = re.compile(
 _CONDITION_NOMINALE = re.compile(
     r"^\s*(?:à\s+l['’]échéance\b|en\s+cas\s+de\b)", re.IGNORECASE
 )
+# L'intervalle entre deux segments d'une MÊME phrase ne contient que de la
+# ponctuation faible. Un point, un point-virgule ou une ligne vide marquent au
+# contraire une frontière que nulle subordination ne franchit.
+_MEME_PHRASE = re.compile(r"[\s,:—–-]*")
 _LIAISON_CONDITIONS = re.compile(
     r"(?:\bou\s+(?:si\b|s['’](?:il|elle|on|ils|elles)\b)|"
     r"\bet\s+à\s+la\s+condition\s+que)\s*$",
     re.IGNORECASE,
 )
+# CONNECTEUR DE CONSÉQUENCE ISOLÉ. « Par conséquent », « Dès lors », « Donc »
+# suivis d'une virgule forment leur propre segment : la découpe sur la
+# ponctuation les détache de la clause qu'ils introduisent. Ils sont l'exact
+# symétrique des connecteurs de condition déjà traités ici — même classe
+# fermée de connecteurs de discours, même certitude grammaticale, direction
+# inverse : la conclusion est le segment qui SUIT, la prémisse celui qui
+# PRÉCÈDE.
+#
+# La forme isolée est seule retenue, et c'est ce qui rend le motif exact.
+# « dès lors QUE le sinistre relève d'un événement climatique » est une
+# CONDITION et non une conséquence : l'ancrage sur la fin de segment l'exclut
+# sans avoir à énumérer les tournures. Et « La restauration ne peut DONC plus
+# être garantie », où le connecteur est enchâssé dans la clause, est écarté
+# aussi : les références y demandent DEUX prémisses (`04-chainage-technique`),
+# que rien dans la surface ne permet de compter — produire la seule prémisse
+# adjacente y fabriquerait une règle fausse.
+#
+# Portée mesurée sur les 188 documents annotés : 37 segments dans le corpus
+# synthétique, où les familles « chaine2 » et « chaine3 » — 40 documents —
+# sont construites sur ce motif. ZÉRO occurrence dans les 32 récits négatifs
+# et dans les lots RGPD, donc aucune pollution possible.
+_CONSEQUENCE_ISOLEE = re.compile(
+    r"^\s*(?:et\s+|puis\s+)?(?:donc|par\s+cons[ée]quent|d[èe]s\s+lors|"
+    r"c['’]est\s+pourquoi|en\s+cons[ée]quence|de\s+ce\s+fait|"
+    r"il\s+en\s+r[ée]sulte)\s*$",
+    re.IGNORECASE,
+)
+
+
+# Subordonnée introduite : ce qu'un connecteur de conséquence doit FRANCHIR
+# pour trouver sa prémisse. « une relecture externe est commandée, car la
+# traduction n'a pas été relue. Par conséquent, le tirage doit être réduit. »
+# — la conclusion suit de la relecture commandée, PAS de la subordonnée
+# causale qui la justifie. Prendre le segment immédiatement précédent
+# fabriquait ici une règle fausse ; mesuré, six sur le corpus synthétique.
+#
+# « car » et « parce que » figurent ici et pas dans `_CONDITION_TEXTUELLE` :
+# celle-là sert à détacher une condition en tête de phrase, ce que « car » ne
+# fait jamais en français.
+# CAUSE POSTPOSÉE. « une relecture externe est commandée, car la traduction
+# n'a pas été relue » : la subordonnée causale suit sa principale, et c'est
+# elle qui la fonde. Le motif est le symétrique exact de `puisque` — déjà
+# traité en tête de phrase — mais « car » et « parce que » ne s'y placent
+# jamais en français, d'où une entrée distincte.
+#
+# « car » est une conjonction de COORDINATION : le parseur dépendanciel lui
+# donne `cc`/`conj` et non `advcl`+`mark`, si bien que le court-circuit
+# syntaxique ne la voit pas. C'est le seul connecteur causal courant dans ce
+# cas, et il était donc absent de bout en bout.
+#
+# Mesuré sur les 188 documents annotés : 24 segments correspondent, et 23 sont
+# CONFIRMÉS par la référence — le segment précédent y est bien une conclusion
+# dont celui-ci est condition. Le seul non confirmé est dans
+# `48-drones-autonomes`. ZÉRO occurrence dans les 32 récits négatifs.
+_CAUSE_POSTPOSEE = re.compile(r"^\s*(?:car|parce\s+qu)\b", re.IGNORECASE)
+
+
+def _ouvre_sa_phrase(texte: str, debut: int) -> bool:
+    """Le segment est-il en TÊTE de sa phrase ?
+
+    Une condition DÉTACHÉE ouvre sa phrase : « Quand la commande dépasse mille
+    euros, le service applique une remise. » La même conjonction placée après
+    sa principale est POSTPOSÉE et se rattache en arrière : « nous hébergeons
+    dans le cloud, puisque la sauvegarde nocturne a échoué. » La distinction
+    est de position, pas de vocabulaire.
+
+    Sans elle, la subordonnée postposée recevait AUSSI une arête vers la
+    phrase suivante, et fabriquait une règle qui enjambe le point. Mesuré sur
+    `g0131-preference-informatique` : « Pour un budget contraint » — le
+    contexte de la priorité — devenait la conclusion d'une règle fondée sur la
+    cause de la phrase d'avant. Une seule arête produisait ainsi une règle
+    fausse, une Option fausse à la place d'un Context, et un ancrage de
+    priorité faux.
+    """
+    return not texte[:debut].rstrip(" \t\r\n").endswith((",", ";", ":"))\
+        and texte[:debut].rstrip(" \t\r\n")[-1:] in ("", ".", "!", "?", "\n")
+
+
+_SUBORDONNEE_INTRODUITE = re.compile(
+    r"^\s*(?:car|parce\s+que|puisque|comme|si|s['’](?:il|elle|on|ils|elles)|"
+    r"quand|lorsqu|d[èe]s\s+que|[ée]tant\s+donn[ée]\s+que|"
+    r"attendu\s+que|vu\s+que)\b",
+    re.IGNORECASE,
+)
+
+
+def est_connecteur_de_consequence(fragment: str) -> bool:
+    """Le segment n'est-il QUE un connecteur de conséquence ?
+
+    Ces segments n'énoncent rien : les références ne leur donnent aucune
+    entité. Ils doivent donc être retirés du flux d'étiquetage, faute de quoi
+    « Par conséquent » se fait étiqueter comme une proposition et devient un
+    Context fantôme — puis, s'il sert de prémisse, une règle fausse.
+    """
+    return bool(_CONSEQUENCE_ISOLEE.match(fragment))
+
+
 _AGE_TEMPOREL = re.compile(
     r"\b(?:avait|avaient|était|étaient)\b[^.;]{0,30}\bans\b",
     re.IGNORECASE,
@@ -307,8 +449,11 @@ def aretes_textuelles(texte: str, segments) -> list[tuple]:
         fragment_d = texte[droite[0]:droite[1]]
         nominale_g = bool(_CONDITION_NOMINALE.search(fragment_g))
         nominale_d = bool(_CONDITION_NOMINALE.search(fragment_d))
-        condition_detachee = bool(_CONDITION_TEXTUELLE.search(fragment_g))
-        if (_CIRCONSTANCE_COURTE.search(fragment_g)
+        en_tete = _ouvre_sa_phrase(texte, gauche[0])
+        condition_detachee = en_tete and bool(
+            _CONDITION_TEXTUELLE.search(fragment_g))
+        if (en_tete
+                and _CIRCONSTANCE_COURTE.search(fragment_g)
                 and len(fragment_g.split()) <= 6
                 and not _ARTICULATION.fullmatch(fragment_g)):
             condition_detachee = True
@@ -320,12 +465,46 @@ def aretes_textuelles(texte: str, segments) -> list[tuple]:
         # Une condition nominale suffixée dépend de la principale qui la
         # précède. Plusieurs conditions successives se rattachent toutes à la
         # même principale, jamais les unes aux autres.
-        if nominale_d:
+        #
+        # SUFFIXÉE VEUT DIRE DANS LA MÊME PHRASE. « En cas de sinistre »
+        # rattaché en arrière est une lecture correcte de « l'indemnité est
+        # due, en cas de sinistre » ; elle est fausse dès qu'un point sépare
+        # les deux, car le groupe ouvre alors sa propre phrase et conditionne
+        # ce qui SUIT. Sur `32-tri-urgences` et `38-conseil-municipal`, cette
+        # arête faisait entrer le contexte de la priorité (« En cas de
+        # suspicion de fracture ») dans les conditions de la règle précédente :
+        # la règle devenait fausse, et la priorité qui s'y appuyait avec elle —
+        # une seule arête détruisait deux éléments de référence.
+        if nominale_d and _MEME_PHRASE.fullmatch(texte[gauche[1]:droite[0]]):
             cible = index
             while cible > 0 and _CONDITION_NOMINALE.search(
                     texte[segments[cible][0]:segments[cible][1]]):
                 cible -= 1
             aretes.append((droite, segments[cible]))
+
+        # Une cause postposée fonde la principale qui la précède, dans la
+        # même phrase. Plusieurs causes successives se rattachent toutes à
+        # cette principale, jamais les unes aux autres.
+        if (_CAUSE_POSTPOSEE.match(fragment_d)
+                and _MEME_PHRASE.fullmatch(texte[gauche[1]:droite[0]])):
+            cible = index
+            while cible > 0 and _CAUSE_POSTPOSEE.match(
+                    texte[segments[cible][0]:segments[cible][1]]):
+                cible -= 1
+            aretes.append((droite, segments[cible]))
+
+        # Le connecteur de conséquence isolé enjambe : sa conclusion est le
+        # segment qui le suit, sa prémisse la PRINCIPALE qui le précède — les
+        # subordonnées introduites qui s'interposent sont franchies, car elles
+        # fondent l'assertion précédente au lieu de l'être.
+        if index > 0 and est_connecteur_de_consequence(fragment_g):
+            amont = index - 1
+            while amont > 0 and _SUBORDONNEE_INTRODUITE.match(
+                    texte[segments[amont][0]:segments[amont][1]]):
+                amont -= 1
+            if not _SUBORDONNEE_INTRODUITE.match(
+                    texte[segments[amont][0]:segments[amont][1]]):
+                aretes.append((segments[amont], droite))
 
         intervalle = texte[gauche[1]:droite[0]]
         if (_CONNECTEUR_INTERNE.fullmatch(intervalle)

@@ -19,3 +19,6 @@ build/
 # secrets locaux
 .env
 .env.*
+
+# sorties de mesure (volumineuses, non versionnées)
+bench/runs/

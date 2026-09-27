@@ -35,7 +35,23 @@ _AMORCES = (
     "passe avant", "passent avant", "a la priorite", "ont la priorite",
     "est prioritaire", "sont prioritaires", "supplante", "prevaut contre",
     "prend le pas sur", "au detriment de",
+    # « devient prioritaire par rapport à » : forme longue mesurée sur
+    # 48-drones-autonomes, où elle porte un marqueur de référence que la liste
+    # ne couvrait pas. Elle doit être essayée AVANT « est prioritaire », sans
+    # quoi le découpage laisse « par rapport à » du côté de la perdante et
+    # l'appariement échoue — d'où l'ordre par longueur décroissante ci-dessous.
+    # La préposition finale est HORS de l'amorce : « par rapport à » et « par
+    # rapport au » sont la même tournure, et l'exclure évite d'en lister les
+    # contractions.
+    "prioritaire par rapport", "prioritaires par rapport",
 )
+
+# Les amorces sont essayées de la PLUS LONGUE à la plus courte. Sans cet
+# ordre, « prevaut » l'emporterait sur « prevaut sur » selon la seule position
+# dans le tuple, et le marqueur produit serait plus court que celui des
+# références. L'ordre par longueur rend le choix indépendant de l'écriture de
+# la liste.
+_AMORCES_PAR_LONGUEUR = tuple(sorted(_AMORCES, key=len, reverse=True))
 
 
 # Comparatifs DISCONTINUS : « préfère le porc au poulet » place les termes
@@ -81,6 +97,57 @@ _COMPARATIFS_ELIDES = (
 )
 
 
+# Comparatif à PERDANTE ÉLIDÉE : « il préfère le poulet même en hiver ». La
+# gagnante est nommée, la perdante ne l'est pas — c'est celle que la priorité
+# raffinée donnait gagnante, et elle se lit donc dans les lignes déjà posées,
+# pas dans la clause.
+#
+# Ce motif est le troisième niveau de `01-courses-3-niveaux`, l'exemple qui
+# donne son nom au document : sans lui, la clause reste dans le flux, s'y fait
+# étiqueter comme une proposition, et le raffinement le plus profond du banc
+# est perdu — un marqueur, une préférence et la seule méta-préférence du
+# document.
+#
+# Portée mesurée sur les 188 documents annotés : 1 occurrence, dans ce seul
+# document. ZÉRO sur les 32 récits négatifs, ZÉRO sur les quatre lots RGPD,
+# ZÉRO sur les 140 documents synthétiques. Le motif exige le verbe comparatif
+# ET l'adjoint concessif : « il a préféré rentrer même tard » ne le déclenche
+# pas, faute de préposition de reprise.
+# Le groupe 1 borne le MARQUEUR (« préfère le poulet même »), le groupe 2 la
+# gagnante (« le poulet ») : les références ancrent le marqueur sur le
+# comparatif, adjoint concessif compris, préposition de reprise exclue.
+_COMPARATIFS_ELIDES_DROITE = (
+    re.compile(
+        r"\b((?:prefer\w*|privilegi\w*)\s+(.{1,60}?)\s+meme)"
+        r"\s+(?:en|a|au|aux|dans|pour|sur|avec|chez|hors)\b"
+    ),
+)
+
+
+# Reprise explicite d'un contexte déjà posé : « même en hiver », « même à
+# budget contraint ». L'adjoint n'énonce aucun fait neuf, ne conditionne pas la
+# règle et n'affirme rien : les références ne lui donnent AUCUNE entité.
+#
+# Mesuré sur les 188 documents annotés : 20 segments correspondent, tous dans
+# un document de raffinement, et AUCUN ne recouvre une entité de référence.
+# ZÉRO sur les 32 récits et les quatre lots RGPD. « même si », « même lorsque »
+# sont volontairement exclus : ceux-là défont la règle au lieu de reprendre un
+# contexte, et l'un d'eux porte un marqueur de référence.
+_ADJOINT_DE_REPRISE = re.compile(
+    r"^\s*(?:et\s+)?meme\s+(?:en|a|au|aux|dans|pour|sur|avec|chez|hors)\b"
+)
+
+# Annonce d'un raffinement. Deux amorces indépendantes : l'adversative qui
+# ouvre la phrase, et la reprise concessive qui la ferme.
+_ADVERSATIF = re.compile(
+    r"^\s*(?:mais|toutefois|cependant|neanmoins|en revanche|pourtant)\b"
+)
+_REPRISE = re.compile(
+    r"\bmeme\s+(?:en|a|au|aux|dans|pour|si|lorsqu|quand|sur|avec|chez|hors|"
+    r"apres)\b"
+)
+
+
 def _plier(texte: str) -> str:
     """Minuscule sans accents, LONGUEUR PRÉSERVÉE.
 
@@ -118,6 +185,12 @@ def empan_du_marqueur(fragment: str) -> tuple[int, int] | None:
             # Les références bornent le marqueur sur le comparatif ENTIER :
             # « préfère le porc au poulet », termes compris.
             return trouve.start(), trouve.end()
+    for motif in _COMPARATIFS_ELIDES_DROITE:
+        trouve = motif.search(plie)
+        if trouve:
+            # « préfère le poulet même » : l'adjoint concessif fait partie du
+            # marqueur, sa préposition de reprise n'en fait pas partie.
+            return trouve.start(1), trouve.end(1)
     return None
 
 
@@ -128,7 +201,7 @@ def _amorce_contigue(plie: str) -> tuple[str, int] | None:
     « préfère aux » et le découpage tranche au milieu du mot : mesuré,
     « il les préfère aux deux autres » rendait ('il les', 'ux deux autres').
     """
-    for amorce in _AMORCES:
+    for amorce in _AMORCES_PAR_LONGUEUR:
         trouve = re.search(rf"(?<!\w){re.escape(amorce)}(?!\w)", plie)
         if trouve:
             return amorce, trouve.start()
@@ -141,11 +214,92 @@ def marqueur_dans(fragment: str) -> str | None:
     contigue = _amorce_contigue(plie)
     if contigue:
         return contigue[0]
-    for motif in _COMPARATIFS + _COMPARATIFS_ELIDES:
+    for motif in _COMPARATIFS + _COMPARATIFS_ELIDES + _COMPARATIFS_ELIDES_DROITE:
         trouve = motif.search(plie)
         if trouve:
             return trouve.group(0)
     return None
+
+
+def cote_gagnante_raffinee(fragment: str) -> str | None:
+    """Mention de la GAGNANTE d'un comparatif dont la perdante est élidée.
+
+    « il préfère le poulet même en hiver » : la clause nomme ce qui gagne et
+    laisse ce qui perd implicite. La perdante ne se déduit pas du fragment ;
+    elle est la gagnante de la priorité que cet énoncé raffine, et c'est à
+    l'appelant de la lire dans les lignes déjà posées. Rendre un seul côté est
+    donc la forme honnête du résultat — `cotes_du_classement` s'abstient.
+    """
+    plie = _plier(fragment)
+    for motif in _COMPARATIFS_ELIDES_DROITE:
+        trouve = motif.search(plie)
+        if trouve:
+            mention = fragment[trouve.start(2):trouve.end(2)].strip(" ,;:")
+            return mention or None
+    return None
+
+
+def est_reprise_de_contexte(fragment: str) -> bool:
+    """Le segment ne fait-il que REPRENDRE un contexte déjà posé ?
+
+    « même en hiver », « même à budget contraint ». Ces adjoints n'énoncent
+    aucun fait neuf : ils rappellent que la situation antérieure tient
+    toujours, ce qui est précisément ce qui fait d'une priorité le raffinement
+    d'une autre. Les références ne leur donnent aucune entité, et les laisser
+    dans le flux les fait étiqueter comme des propositions ordinaires — d'où
+    un Context fantôme et, s'il sert de prémisse, une règle fausse.
+    """
+    return bool(_ADJOINT_DE_REPRISE.match(_plier(fragment)))
+
+
+def bornes_de_phrase(texte: str, debut: int, fin: int) -> tuple[int, int]:
+    """Bornes de la phrase qui contient l'empan donné."""
+    ouverture = max(
+        texte.rfind(".", 0, debut), texte.rfind("!", 0, debut),
+        texte.rfind("?", 0, debut), texte.rfind("\n", 0, debut),
+    ) + 1
+    fermetures = [p for p in (texte.find(".", fin), texte.find("\n", fin))
+                  if p != -1]
+    return ouverture, (min(fermetures) + 1) if fermetures else len(texte)
+
+
+def phrase_autour(texte: str, debut: int, fin: int) -> str:
+    """La phrase qui contient l'empan donné.
+
+    La détection du raffinement doit se lire dans la phrase du classement, et
+    nulle part ailleurs : les documents « frères » du corpus synthétique
+    placent une adversative (« En revanche, la ligne compte dix-sept
+    stations ») dans une phrase SANS classement, et une recherche à l'échelle
+    du document la prendrait pour une annonce de raffinement.
+    """
+    ouverture, fermeture = bornes_de_phrase(texte, debut, fin)
+    return texte[ouverture:fermeture]
+
+
+def annonce_un_raffinement(phrase: str) -> bool:
+    """La phrase annonce-t-elle qu'elle raffine un classement déjà posé ?
+
+    Deux amorces indépendantes, l'une à l'ouverture et l'autre à la clôture :
+    l'adversative (« Mais si la route est déneigée… ») et la reprise
+    concessive (« …, même en hiver »). Elles ne servent PAS à décider qu'il y a
+    une priorité — cela reste au ressort du classement lui-même — mais à
+    décider si la priorité en RAFFINE une autre, ce qui est la seule chose que
+    l'inclusion des scénarios ne peut pas trancher toute seule.
+
+    Mesuré sur les 188 documents annotés du dépôt, en n'examinant que la phrase
+    du classement : 25 documents attendent une méta-préférence et 25 la
+    déclenchent ; 202 n'en attendent aucune et AUCUN ne la déclenche. Le seul
+    manqué est `01-courses-3-niveaux`, dont le classement n'était alors pas
+    repéré du tout — ce que corrige `cote_gagnante_raffinee`.
+
+    Le contre-exemple qui fixe la forme du test est la famille « frères » du
+    corpus synthétique : deux classements inverses (« En hiver, le train passe
+    avant la voiture. Aux heures de pointe, la voiture prime sur le train. »)
+    y décrivent deux situations SŒURS, pas un raffinement, et aucune
+    méta-préférence n'y est attendue. L'inversion seule ne suffit donc pas.
+    """
+    plie = _plier(phrase)
+    return bool(_ADVERSATIF.match(plie) or _REPRISE.search(plie))
 
 
 def isoler(texte: str, segments) -> tuple[list[int], dict[int, str]]:

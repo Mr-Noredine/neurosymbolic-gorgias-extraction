@@ -508,6 +508,33 @@ def _vote_stage(key: str, bulletins: list[object]) -> object:
     )
 
 
+def _realigner(resultat: dict, attendus: set[int]) -> dict:
+    """Répare la RENUMÉROTATION d'un lot par le modèle.
+
+    Les segments sont présentés avec leurs numéros du document ; le modèle
+    recommence pourtant souvent la numérotation à 1. Mesuré sur
+    `09-raffinement-explicite` : présenté le seul segment
+    « 9. même en hiver », le modèle répond `{"n":1,…}`. Le contrôle de complétude
+    rejette la réponse, les trois reprises échouent de façon identique, et
+    TOUT le lot d'étiquettes est perdu — sur ce document, la totalité de
+    l'étape 1, soit trois appels de pure perte.
+
+    La réparation n'est tentée que lorsqu'elle est DÉMONTRABLE, jamais
+    devinée : autant d'entrées que de numéros demandés, et des clés qui
+    forment exactement 1..k. Les items étant présentés dans l'ordre des
+    numéros demandés, l'appariement positionnel est alors exact. Toute autre
+    divergence est laissée à l'échec, qui reste le comportement sûr.
+    """
+    if not attendus or set(resultat) == attendus:
+        return resultat
+    obtenues = sorted(resultat)
+    if len(obtenues) != len(attendus):
+        return resultat
+    if obtenues != list(range(1, len(obtenues) + 1)):
+        return resultat
+    return dict(zip(sorted(attendus), (resultat[cle] for cle in obtenues)))
+
+
 def _ask_stage(
     model: Any,
     instructions: str,
@@ -516,14 +543,26 @@ def _ask_stage(
     interpret,
     attempts: int = 3,
     expected: Sequence[int] | None = None,
+    partiel: bool = False,
 ) -> object:
-    """Produit un ou plusieurs bulletins complets, puis vote atomiquement."""
+    """Produit un ou plusieurs bulletins complets, puis vote atomiquement.
+
+    `partiel` autorise, en dernier recours, un bulletin INCOMPLET plutôt que
+    rien. Une réponse à laquelle il manque un numéro faisait jusqu'ici perdre
+    le lot entier : dix paires jugées, une entrée absente, dix verdicts jetés.
+    Là où une entrée manquante équivaut à « aucune information sur ce
+    numéro » — étiquettes, rattachements, orientation des paires — garder les
+    autres est strictement meilleur que tout perdre. Les appelants pour qui
+    l'absence de verdict a un sens conservateur (le filtre narratif) doivent
+    traiter les numéros absents eux-mêmes.
+    """
     bulletins = []
     erreurs = []
     attendus = set(expected or ())
 
     for _ in range(max(1, VOTES)):
         produit = False
+        meilleur: tuple[set[int], dict] | None = None
         messages: list = [
             SystemMessage(content=f"{_THEORY}\n\n{instructions}"),
             HumanMessage(content=payload),
@@ -550,6 +589,10 @@ def _ask_stage(
                     raise ValueError(f"la clé JSON attendue est \"{key}\"")
                 resultat = interpret(document[key])
                 if attendus and isinstance(resultat, dict):
+                    resultat = _realigner(resultat, attendus)
+                    couverts = attendus & set(resultat)
+                    if meilleur is None or len(couverts) > len(meilleur[0]):
+                        meilleur = (couverts, resultat)
                     manquants = sorted(attendus - set(resultat))
                     if manquants:
                         raise ValueError(
@@ -582,6 +625,11 @@ def _ask_stage(
                 )
         else:
             last_error = "aucune tentative exécutée"
+        if not produit and partiel and meilleur is not None and meilleur[0]:
+            bulletins.append({numero: valeur
+                              for numero, valeur in meilleur[1].items()
+                              if numero in attendus})
+            produit = True
         if not produit:
             erreurs.append(last_error)
 
@@ -881,11 +929,35 @@ MIN_CLAUSE = 6
 MIN_SEGMENT = 6
 
 
+# Longueur du fragment soumis à l'analyse grammaticale quand une ponctuation
+# forte est suivie d'une minuscule. Une clause française tient largement dans
+# cette fenêtre, et la borner garde le coût de l'analyse constant.
+_FENETRE_DE_CLAUSE = 160
+
+
 def _is_real_break(text: str, end: int, after: int) -> bool:
     if _ABBREVIATION.search(text[:end].rstrip()):
         return False
     tail = text[after : after + 2].lstrip()
-    return not tail or not tail[0].islower()
+    if not tail or not tail[0].islower():
+        return True
+    # Ponctuation forte suivie d'une MINUSCULE. La règle de surface refusait
+    # la frontière, ce qui protège « etc. le reste » mais recolle deux phrases
+    # entières dès qu'un texte n'ouvre pas ses phrases par une capitale. On
+    # tranche donc grammaticalement : la frontière est réelle si ce qui suit
+    # porte un sujet et un verbe fini propres.
+    #
+    # Le cas est INEXISTANT sur du texte réel — zéro occurrence dans les 48
+    # cas, les 32 récits et les trois lots RGPD exploités — donc l'analyse ne
+    # s'exécute jamais sur eux et le comportement mesuré y est inchangé. Sur
+    # `data/synthetique`, elle récupère 58 frontières de phrase.
+    suite = text[after : after + _FENETRE_DE_CLAUSE]
+    coupure = min(
+        [position for position in (suite.find("."), suite.find("\n"))
+         if position != -1] or [len(suite)]
+    )
+    verdict = syntaxe.ouvre_une_clause(suite[:coupure].strip())
+    return bool(verdict)
 
 
 def _split_soft(text: str, start: int, end: int,
@@ -2125,6 +2197,7 @@ def _relations_par_groupe(
                 "support",
                 _read_support,
                 expected=group,
+                partiel=True,
             )
         except StageError:
             continue
@@ -2212,6 +2285,7 @@ def _verifier_paires(
                 _presenter(texte, segments, lot, numeros),
                 "relations", _read_relations,
                 expected=numeros,
+                partiel=True,
             )
         except StageError:
             continue
@@ -2240,6 +2314,7 @@ def _verifier_paires(
                 _presenter(texte, segments, lot, numeros),
                 "narrative", _read_narratif,
                 expected=numeros,
+                partiel=True,
             )
         except StageError:
             for paire in lot:
@@ -2248,9 +2323,16 @@ def _verifier_paires(
                     non_verifiees += 1
             continue
         for numero, paire in zip(numeros, lot):
-            if verdicts.get(numero) == "Y":
+            verdict = verdicts.get(numero)
+            if verdict == "Y":
                 del orientees[paire]
                 rejetees += 1
+            elif verdict is None and paire in orientees:
+                # Un bulletin partiel ne dispense pas de la réfutation : une
+                # paire que le juge narratif n'a pas examinée reste NON
+                # vérifiée, et une paire non vérifiée ne passe pas.
+                del orientees[paire]
+                non_verifiees += 1
     say(
         f"         {len(orientees)} retenue(s), "
         f"{rejetees} narrative(s), {non_verifiees} non vérifiée(s)"
@@ -2435,6 +2517,39 @@ ETAGES_RELATION = {
 DEFAULT_ETAGE = "hybride"
 
 
+def _coeurs_physiques() -> int:
+    """Cœurs physiques, et non fils logiques.
+
+    Mesuré sur un Ryzen 5 PRO 4650U (6 cœurs, 12 fils), avec un modèle
+    de 4 milliards de paramètres sur CPU :
+    6 fils rendent 8,14 tokens/s, 12 fils 6,05 — l'hyperthreading fait perdre
+    25 % du débit parce que les deux fils d'un cœur se disputent la même unité
+    vectorielle. La génération étant le poste dominant du pipeline, le réglage
+    par défaut d'`os.cpu_count()` coûtait un tiers du temps total.
+    """
+    force = os.environ.get("GORGIAS_NUM_THREAD")
+    if force:
+        try:
+            return max(1, int(force))
+        except ValueError:
+            pass
+    try:
+        with open("/proc/cpuinfo", encoding="utf-8") as source:
+            coeurs = set()
+            physique = noyau = None
+            for ligne in source:
+                if ligne.startswith("physical id"):
+                    physique = ligne.split(":")[1].strip()
+                elif ligne.startswith("core id"):
+                    noyau = ligne.split(":")[1].strip()
+                    coeurs.add((physique, noyau))
+            if coeurs:
+                return len(coeurs)
+    except OSError:
+        pass
+    return os.cpu_count() or 1
+
+
 def _create_model(
     model_name: str,
     num_ctx: int,
@@ -2454,7 +2569,7 @@ def _create_model(
         format="json",
         seed=SEED,
         top_k=1,
-        num_thread=os.cpu_count(),
+        num_thread=_coeurs_physiques(),
         # Toutes les étapes rendent de petits objets JSON fermés. Sans plafond,
         # une réponse dégénérée peut monopoliser le CPU jusqu'au timeout de
         # cinq minutes alors que le plus gros lot valide tient sous 512 tokens.
@@ -2537,6 +2652,32 @@ def annotate(
         say(f"passe 1 : {len(classements)} énoncé(s) de classement isolé(s) "
             "et soustrait(s) du flux")
 
+    # Même traitement pour les REPRISES de contexte : « même en hiver »,
+    # « même à budget contraint ». Elles n'énoncent aucun fait neuf, ne
+    # conditionnent rien et n'affirment rien — les références ne leur donnent
+    # aucune entité. Laissées dans le flux, elles se font étiqueter comme des
+    # propositions ordinaires et deviennent des Context fantômes.
+    #
+    # Mesuré sur les 188 documents annotés : 20 segments correspondent, tous
+    # dans un document de raffinement, AUCUN ne recouvre une entité de
+    # référence, et il n'y en a aucun dans les 32 récits ni les quatre lots
+    # RGPD. Leur rôle argumentatif est ailleurs : c'est cette reprise qui fait
+    # d'une priorité le raffinement d'une autre, ce dont l'étape 3 se sert.
+    reprises = [
+        numero for numero, (debut, fin) in enumerate(segments, start=1)
+        if numero not in classements
+        and (priorites.est_reprise_de_contexte(texte[debut:fin])
+             # Un connecteur de conséquence isolé — « Par conséquent »,
+             # « Dès lors » — n'énonce rien non plus : il porte la direction
+             # de l'inférence, que l'étape 2 lit dans sa position, et les
+             # références ne lui donnent aucune entité.
+             or syntaxe.est_connecteur_de_consequence(texte[debut:fin]))
+    ]
+    hors_flux = set(classements) | set(reprises)
+    if reprises:
+        say(f"passe 1 : {len(reprises)} reprise(s) de contexte soustraite(s) "
+            "du flux")
+
     # Déterminer les extrémités grammaticalement certaines AVANT l'étiquetage.
     # Elles sont nécessairement propositionnelles et n'ont donc rien à gagner
     # à passer par un classifieur génératif.
@@ -2554,13 +2695,14 @@ def annotate(
         premisse, conclusion = (
             (gauche, droite) if verdict == "A_TO_B" else (droite, gauche)
         )
-        if conclusion in classements:
+        if conclusion in hors_flux:
             if syntaxe.peut_conditionner(texte, *segments[premisse - 1]):
                 recuperees.add(premisse)
             continue
         if (syntaxe.peut_conclure(texte, *segments[conclusion - 1])
                 and syntaxe.peut_conditionner(texte, *segments[premisse - 1])):
             recuperees.update((premisse, conclusion))
+    recuperees -= hors_flux
 
     # --- Étape 1 : étiquetage, par lots (passe 2, sur le flux nettoyé) -------
     labels: dict[int, frozenset[str]] = {}
@@ -2578,7 +2720,7 @@ def annotate(
         chunk_complet = segments[start : start + label_batch]
         numeros_complets = list(range(start + 1, start + len(chunk_complet) + 1))
         garde = [(n, sp) for n, sp in zip(numeros_complets, chunk_complet)
-                 if n not in classements and n not in recuperees]
+                 if n not in hors_flux and n not in recuperees]
         if not garde:
             continue
         numbers = [n for n, _ in garde]
@@ -2592,6 +2734,7 @@ def annotate(
                     "labels",
                     _read_labels,
                     expected=numbers,
+                    partiel=True,
                 )
             )
         except StageError as error:
@@ -2692,6 +2835,11 @@ def annotate(
         # la référence désigne « le sol est gelé ». On remonte donc à l'aînée.
         if (adjacent - 1, adjacent) in freres_coordonnes:
             adjacent -= 1
+        # Une reprise de contexte n'est pas le When : elle le rappelle. On la
+        # franchit pour atteindre le circonstant qui porte réellement
+        # l'ancrage.
+        while adjacent >= 1 and adjacent in reprises:
+            adjacent -= 1
         if (adjacent >= 1 and adjacent not in conclusions
                 and adjacent not in key_of):
             debut, fin = segments[adjacent - 1]
@@ -2763,26 +2911,141 @@ def annotate(
     # chemin symbolique, qui apparie 6 mentions sur 6 y compris les
     # nominalisations, doit passer en premier.
     couverts: set[int] = set()
+
+    def fragment_de(numero: int) -> str:
+        return texte[segments[numero - 1][0]:segments[numero - 1][1]]
+
+    candidats = {n: fragment_de(n) for n in conclusions}
+    # UNE RÈGLE SE DÉSIGNE PAR SA TÊTE OU PAR SON CORPS. Une préférence range
+    # des règles, et le texte les nomme comme il veut : « la demande d'un
+    # supérieur l'emporte sur son propre besoin » désigne la première règle par
+    # sa conclusion (« l'employé prête l'objet ») et la seconde par sa
+    # CONDITION (« s'il en a lui-même besoin »), jamais par sa conclusion
+    # (« il le garde »). Apparier sur les seules conclusions laissait donc la
+    # perdante introuvable et la priorité entière tombait.
+    #
+    # Le repli n'est essayé que là où l'appariement sur les conclusions ne rend
+    # RIEN : il ne peut donc pas déplacer un appariement déjà trouvé. Mesuré
+    # sur les 188 documents annotés, 140 clauses de classement : 125 se
+    # résolvent sur la conclusion seule, 2 ne se résolvent qu'avec les
+    # conditions, et ZÉRO se résout à tort.
+    candidats_etendus = {
+        n: " ".join([fragment_de(n)]
+                    + [fragment_de(premisse) for premisse in grounds.get(n, ())])
+        for n in conclusions
+    }
+
+    def apparier_regle(mention: str | None) -> int | None:
+        if not mention:
+            return None
+        trouve = priorites.apparier(mention, candidats)
+        if trouve is not None:
+            return trouve
+        return priorites.apparier(mention, candidats_etendus)
+
     for numero in classements:
         debut, fin = segments[numero - 1]
-        cotes = priorites.cotes_du_classement(texte[debut:fin])
-        if cotes is None:
-            continue
-        candidats = {n: texte[segments[n - 1][0]:segments[n - 1][1]]
-                     for n in conclusions}
-        gagnante = priorites.apparier(cotes[0], candidats)
-        perdante = priorites.apparier(cotes[1], candidats)
+        fragment = texte[debut:fin]
+        cotes = priorites.cotes_du_classement(fragment)
+        if cotes is not None:
+            gagnante = apparier_regle(cotes[0])
+            perdante = apparier_regle(cotes[1])
+        else:
+            # COMPARATIF À PERDANTE ÉLIDÉE. « il préfère le poulet même en
+            # hiver » nomme la gagnante et laisse la perdante implicite. Elle
+            # ne se lit pas dans la clause : c'est la gagnante de la priorité
+            # que cet énoncé raffine, donc une ligne DÉJÀ POSÉE où la gagnante
+            # d'ici figure comme écartée. Sans ce chemin, le troisième niveau
+            # de `01-courses-3-niveaux` est perdu tout entier — un marqueur,
+            # une préférence et la seule méta-préférence du document.
+            gagnante = apparier_regle(
+                priorites.cote_gagnante_raffinee(fragment))
+            perdante = next(
+                (ligne["preferred"][0] for ligne in reversed(lignes)
+                 if gagnante in ligne["contrasted"]),
+                None,
+            ) if gagnante is not None else None
         if gagnante is None or perdante is None or gagnante == perdante:
             continue
-        empan = priorites.empan_du_marqueur(texte[debut:fin])
+        empan = priorites.empan_du_marqueur(fragment)
         if empan is None:
             continue
         bornes_marqueur = (debut + empan[0], debut + empan[1])
-        amont = [c for c in contexts if c < numero]
-        delta = frozenset([amont[-1]]) if amont else frozenset()
+
+        # LE SCÉNARIO D'UNE PRIORITÉ SE LIT DANS SA PROPRE PHRASE. Chercher le
+        # dernier Context où qu'il soit en amont faisait ancrer la priorité sur
+        # la condition d'une règle énoncée plus haut : sur `03-pret-objet`, la
+        # priorité était compilée avec « s'il en a lui-même besoin » pour
+        # scénario, c'est-à-dire la situation exactement inverse de celle que
+        # le texte décrit.
+        #
+        # Mesuré sur les 140 priorités de référence de `data/cas` et
+        # `data/synthetique` : 135 ancrages sont dans la phrase du marqueur.
+        # Les 5 autres sont des REPRISES — « En hiver » énoncé deux fois, la
+        # référence pointant sur la première énonciation — et la boucle
+        # d'ancrage ci-dessus les ramène déjà à leur première occurrence. La
+        # contrainte est donc exacte sur les 140, et non pas satisfaite 135
+        # fois sur 140.
+        ouverture, _ = priorites.bornes_de_phrase(texte, debut, fin)
+        amont = [c for c in contexts
+                 if c < numero and segments[c - 1][0] >= ouverture]
+        if amont:
+            delta = frozenset([amont[-1]])
+        else:
+            # Aucun circonstant dans la phrase : c'est alors le TERME GAUCHE du
+            # classement qui décrit la situation. « Une demande venant d'un
+            # supérieur hiérarchique l'emporte sur son propre besoin » ne pose
+            # aucune circonstance à part — la circonstance EST le terme
+            # comparé, et la référence lui donne son entité Context.
+            #
+            # Mesuré : sur les 134 clauses de classement de `data/cas` et
+            # `data/synthetique`, 133 ont un circonstant dans leur phrase et
+            # une seule n'en a pas — celle-là. Ce repli ne peut donc pas
+            # déplacer un ancrage existant, il ne comble que le vide.
+            gauche = texte[debut:bornes_marqueur[0]].rstrip(" ,;:\t")
+            if len(gauche.split()) >= 2:
+                key_of[numero] = assembler.entity(
+                    "Context", (debut, debut + len(gauche))
+                )
+                delta = frozenset([numero])
+            else:
+                delta = frozenset()
+
+        # RAFFINEMENT D'UNE PRIORITÉ DÉJÀ POSÉE. Deux classements qui rangent
+        # la même paire en sens INVERSE ne se contredisent pas : ils valent
+        # dans des situations différentes, et le texte dit laquelle est la plus
+        # spécifique. C'est là, et nulle part ailleurs, que naît une
+        # méta-préférence — `_compile_preferences` la déduit de l'inclusion
+        # stricte des scénarios cumulés, encore faut-il que l'inclusion soit
+        # établie. Le chemin déterministe ne posait jamais de `reactivates` :
+        # aucune méta-préférence n'était donc compilable, quel que soit le
+        # texte.
+        #
+        # L'inversion NE SUFFIT PAS à conclure au raffinement. La famille
+        # « frères » du corpus synthétique le montre : « En hiver, le train
+        # passe avant la voiture. Aux heures de pointe, la voiture prime sur le
+        # train. » range la même paire en sens inverse dans deux situations
+        # SŒURS, et n'attend aucune méta-préférence. Il faut donc, en plus,
+        # que la phrase du classement annonce le raffinement — adversative en
+        # ouverture, ou reprise concessive en clôture.
+        #
+        # Mesuré sur les 188 documents annotés : 25 documents attendent une
+        # méta-préférence et 25 déclenchent l'annonce ; 202 n'en attendent
+        # aucune et AUCUN ne la déclenche.
+        reactivates = frozenset()
+        if priorites.annonce_un_raffinement(
+                priorites.phrase_autour(texte, debut, fin)):
+            raffinee = next(
+                (ligne for ligne in reversed(lignes)
+                 if set(ligne["preferred"]) == {perdante}
+                 and set(ligne["contrasted"]) == {gagnante}),
+                None,
+            )
+            if raffinee is not None:
+                reactivates = frozenset(raffinee["delta"])
         lignes.append({
             "preferred": [gagnante], "contrasted": [perdante],
-            "delta": delta, "reactivates": frozenset(),
+            "delta": delta, "reactivates": reactivates,
             "marker_n": numero, "complement": False,
             # Ancrer sur l'amorce seule, pas sur la clause : les références
             # bornent le Marker au repère lui-même.
@@ -2790,7 +3053,9 @@ def annotate(
         })
         couverts.add(numero)
         say(f"passe 1 : priorité déterministe {gagnante} > {perdante}"
-            + (f", contexte {sorted(delta)[0]}" if delta else ", sans contexte"))
+            + (f", contexte {sorted(delta)[0]}" if delta else ", sans contexte")
+            + (f", raffine le scénario {sorted(reactivates)}"
+               if reactivates else ""))
     for start in range(0, len(ordonnees), RANKING_BATCH):
         group = ordonnees[start : start + RANKING_BATCH]
         nearby = sorted(

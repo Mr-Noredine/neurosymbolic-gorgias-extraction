@@ -47,8 +47,20 @@ exige_ollama() {
         rouge "le serveur Ollama ne répond pas. Démarrez-le :  ollama serve"
         exit 1
     fi
-    if ! ollama list | grep -q "^${1%%:*}"; then
+    # L'ÉTIQUETTE COMPTE, PAS LA FAMILLE. Comparer le seul préfixe avant « : »
+    # rendait le contrôle inopérant là où il sert le plus : avec `qwen3:1.7b`
+    # installé et `qwen3:8b` demandé, « ^qwen3 » correspond, le contrôle passe,
+    # et l'annotation échoue bien plus tard sur un 404 d'Ollama — exactement ce
+    # que ce script existe pour éviter. On compare donc la ligne entière.
+    cible="$1"
+    case "$cible" in *:*) ;; *) cible="$cible:latest" ;; esac
+    if ! ollama list | awk 'NR > 1 {print $1}' | grep -qxF "$cible"; then
         rouge "modèle « $1 » absent. Récupérez-le :  ollama pull $1"
+        info ""
+        info "  modèles présents :"
+        ollama list | awk 'NR > 1 {print "    " $1}' >&2
+        info ""
+        info "  ou choisissez-en un :  ./run FICHIER.txt --modele NOM"
         exit 1
     fi
 }
